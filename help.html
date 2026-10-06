@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Sphere - Help & User Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <header>
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <a href="index.html" class="logo-container">
+                <img src="safe-sphere-logo.png" alt="Safe Sphere Logo" class="logo-img">
+                <div class="logo-text notranslate">Safe Sphere</div>
+            </a>
+        </div>
+        
+        <button class="safebot-btn" onclick="toggleSafeBot()">🤖 Ask SafeBot</button>
+        
+        <div class="header-right">
+            <div class="lang-dropdown" id="langDropdownContainer">
+                <button class="lang-btn" id="langBtn" type="button">
+                    🌐 <span id="currentLang">ENG</span> <span class="arrow">▾</span>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <button type="button" class="lang-option" data-code="en">English</button>
+                    <button type="button" class="lang-option" data-code="hi">हिन्दी (Hindi)</button>
+                    <button type="button" class="lang-option" data-code="mr">मराठी (Marathi)</button>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li onclick="window.location.href='about.html'">ℹ️ ABOUT</li>
+                <li onclick="window.location.href='help.html'" style="color: var(--primary-blue);">❓ HELP</li>
+                <li onclick="window.location.href='feedback.html'">💬 FEEDBACK</li>
+                <li class="quiz-btn" onclick="window.location.href='quiz.html'">📝 QUIZ SECTION</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="safety-ticker">
+        <div class="ticker-label">💡 QUICK TIPS</div>
+        <div class="ticker-wrapper">
+            <div class="ticker-content">
+                <span>Use the Globe icon to translate the site to Hindi or Marathi</span>
+                <span>•</span>
+                <span>Test suspicious emails in our AI Scanner before clicking links</span>
+                <span>•</span>
+                <span>Call 1930 immediately for financial cyber fraud</span>
+                <span>•</span>
+                <span>Open the sidebar to change the website theme to Dark Mode</span>
+                <span>•</span>
+                <span>Use the Globe icon to translate the site to Hindi or Marathi</span>
+                <span>•</span>
+                <span>Test suspicious emails in our AI Scanner before clicking links</span>
+                <span>•</span>
+                <span>Call 1930 immediately for financial cyber fraud</span>
+                <span>•</span>
+                <span>Open the sidebar to change the website theme to Dark Mode</span>
+                <span>•</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="layout-container">
+        
+        <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+        <aside id="leftSidebar" class="left-sidebar">
+            <div class="sidebar-content">
+                <button class="close-sidebar-btn" onclick="toggleSidebar()">×</button>
+                
+                <ul class="sidebar-mobile-nav">
+                    <li onclick="window.location.href='about.html'">ℹ About</li>
+                    <li onclick="window.location.href='help.html'" style="color: var(--primary-blue);">❓ Help</li>
+                    <li onclick="window.location.href='feedback.html'">💬 Feedback</li>
+                    <li class="quiz-mobile-btn" onclick="window.location.href='quiz.html'">📝 Take a Quiz</li>
+                </ul>
+
+                <h3>Site Options</h3>
+                <ul class="site-options-list">
+                    <li>1. Cyber Security</li>
+                    <li>2. Child Safety</li>
+                    <li>3. Personal Safety</li>
+                    <li>4. Women Safety</li>
+                    <li>5. Digital Safety</li>
+                    <li>6. Financial Safety</li>
+                </ul>
+                
+                <div class="theme-selector-container">
+                    <label for="themeSelect" class="theme-label">🎨 Appearance</label>
+                    <div class="select-wrapper">
+                        <select id="themeSelect" class="theme-dropdown" onchange="changeTheme(this.value)">
+                            <option value="emerald">Emerald Green</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="purple">Royal Purple</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content about-main-content">
+            
+            <section class="about-hero">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">📖</div>
+                <h1 class="notranslate">How to Use SafeSphere</h1>
+                <p class="about-tagline">Your Complete Guide to Navigating Our Safety Tools</p>
+                <p class="about-description">
+                    SafeSphere is packed with interactive tools, AI-powered scanners, and critical emergency resources. Use this guide to understand exactly how each feature works and how to get the most out of our platform.
+                </p>
+            </section>
+
+            <section class="about-box">
+                <h2>🛡️ 1. The AI Threat Scanner (Home Page)</h2>
+                <p>Located on the Home page, our flagship feature uses backend neural analyzers and forensic inspection to protect you from digital threats.</p>
+                <ul style="padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8; margin-top: 10px;">
+                    <li><strong>Email Phishing & Forensics:</strong> Paste suspicious email text or raw `.eml` headers. The engine parses SPF, DKIM, and DMARC alignments, extracts the originating public IP address, and queries geolocation databases to detect VPN or proxy masking.</li>
+                    <li><strong>Image/Video Deepfake Tab:</strong> Upload an image or video to analyze compression artifacts and generative neural noise indicative of synthetic generation.</li>
+                    <li><strong>AI Voice Clone Tab:</strong> Upload audio clips to scan acoustic spectra for vocoder anomalies and voice synthesis signatures.</li>
+                </ul>
+            </section>
+     
+            <section class="about-box">
+                <h2>🚨 2. Emergency Contacts & Official Portals</h2>
+                <p>When you are in immediate danger or need to report a crime, SafeSphere provides instant routing to verified official services.</p>
+                <ul style="padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8; margin-top: 10px;">
+                    <li><strong>One-Tap Calling:</strong> The Emergency Contacts card lists primary Indian helplines (1930 for Cyber Crime, 112 for Police, 1091 for Women, 1098 for Child Helpline). Tapping the 📞 icon immediately triggers dialing on mobile devices.</li>
+                    <li><strong>Register Complaints:</strong> Click any official portal card (Cyber Crime, NCW, PENCIL, Consumer Helpline) to review procedural steps before navigating to the government portal.</li>
+                </ul>
+            </section>
+
+            <section class="about-box">
+                <h2>📰 3. Live Daily Crime Alerts</h2>
+                <p>The right sidebar features a time-calculated feed providing case studies of recent incidents caused by safety lapses.</p>
+                <ul style="padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8; margin-top: 10px;">
+                    <li><strong>Automatic Expiration:</strong> Incidents are actively measured against system time and purged after 72 hours.</li>
+                    <li><strong>Direct References:</strong> Every card provides verified publication citations and external links to read complete advisories.</li>
+                </ul>
+            </section>
+
+            <section class="about-box">
+                <h2>📝 4. Quizzes & Feedback</h2>
+                <p>Interactive education and verified user reviews maintain community accountability.</p>
+                <ul style="padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8; margin-top: 10px;">
+                    <li><strong>AI Dynamic Quizzes:</strong> Selecting any topic automatically prompts Google Gemini to write 10 fresh, practical multiple-choice questions on demand.</li>
+                    <li><strong>Community Feedback:</strong> Users can post feedback, with an automated check blocking disposable email providers.</li>
+                </ul>
+            </section>
+
+            <section class="about-box">
+                <h2>📚 5. Safety Knowledge Categories</h2>
+                <p>Access the sidebar (☰) to study reference guidance covering six primary categories:</p>
+                <ul style="padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8; margin-top: 10px;">
+                    <li><strong>Cyber & Digital Safety:</strong> Device hardening, 2FA protocols, password managers, and data breach prevention.</li>
+                    <li><strong>Financial Safety:</strong> Spotting fake banking portals, avoiding UPI request scams, and ATM skimmer detection.</li>
+                    <li><strong>Personal & Women's Safety:</strong> Situational awareness habits, Zero FIR procedures, and SOS smartphone features.</li>
+                    <li><strong>Child Safety:</strong> Parental controls, screen-time regulation, and reporting cyberbullying.</li>
+                </ul>
+            </section>
+
+            <section class="about-box mentor-box">
+                <h2>🌐 6. Accessibility Tools</h2>
+                <p>SafeSphere accommodates multilingual access and viewing preferences across all devices.</p>
+                <ul style="padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8; margin-top: 10px;">
+                    <li><strong>Language Translation:</strong> Use the language dropdown (🌐 ENG) to switch entire pages to Hindi or Marathi while keeping the SafeSphere brand intact.</li>
+                    <li><strong>Theme Switcher:</strong> Switch between Emerald Green, Dark Mode, and Royal Purple. Choices persist across your session.</li>
+                </ul>
+            </section>
+
+        </main>
+
+        <aside class="right-sidebar about-right-sidebar">
+            <div class="news-sidebar-header">
+                <div class="live-badge"><span class="live-dot"></span> HELP CENTER</div>
+            </div>
+            
+            <div class="news-ticker-wrapper" style="margin-top: 1rem;">
+                <div class="news-ticker-track">
+                    <div class="news-item">
+                        <span class="news-time">FAQ</span>
+                        Is the AI Scanner private? Yes, files are deleted from the server immediately after scanning.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">SUPPORT</span>
+                        Encountered a bug? Use the Feedback page to report technical issues.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">MOBILE</span>
+                        SafeSphere is fully optimized for smartphones and tablets.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">FAQ</span>
+                        Is the AI Scanner private? Yes, files are deleted from the server immediately after scanning.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">SUPPORT</span>
+                        Encountered a bug? Use the Feedback page to report technical issues.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">MOBILE</span>
+                        SafeSphere is fully optimized for smartphones and tablets.
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- SAFEBOT CHAT WINDOW -->
+    <div class="safebot-modal" id="safebotModal">
+        <div class="safebot-header">
+            <div class="safebot-title">🤖 SafeBot AI</div>
+            <button class="safebot-close" onclick="toggleSafeBot()">×</button>
+        </div>
+        <div class="safebot-messages" id="safebotMessages">
+            <div class="bot-msg">Hello! I am SafeBot, your personal safety and security assistant. Ask me anything about scams, cyber safety, or physical protection.</div>
+            <div class="typing-indicator" id="safebotTyping">SafeBot is thinking...</div>
+        </div>
+        <div class="safebot-input-area">
+            <input type="text" id="safebotInput" placeholder="Ask a safety question..." onkeypress="handleSafeBotEnter(event)">
+            <button onclick="sendSafeBotMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function googleTranslateInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,mr', autoDisplay: false }, 'google_translate_element');
+            setTimeout(function() {
+                var savedLang = localStorage.getItem('safeSphereLang');
+                if (savedLang && savedLang !== 'en') {
+                    var selectField = document.querySelector('.goog-te-combo');
+                    if (selectField) {
+                        selectField.value = savedLang;
+                        selectField.dispatchEvent(new Event('change'));
+                    }
+                }
+            }, 1000); 
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script src="script.js"></script>
+</body>
+</html>

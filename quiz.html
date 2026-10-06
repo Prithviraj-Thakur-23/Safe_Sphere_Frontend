@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Sphere - Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <header>
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <a href="index.html" class="logo-container">
+                <img src="safe-sphere-logo.png" alt="Safe Sphere Logo" class="logo-img">
+                <div class="logo-text notranslate">Safe Sphere</div>
+            </a>
+        </div>
+        
+        <button class="safebot-btn" onclick="toggleSafeBot()">🤖 Ask SafeBot</button>
+        
+        <div class="header-right">
+            <div class="lang-dropdown" id="langDropdownContainer">
+                <button class="lang-btn" id="langBtn" type="button">
+                    🌐 <span id="currentLang">ENG</span> <span class="arrow">▾</span>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <button type="button" class="lang-option" data-code="en">English</button>
+                    <button type="button" class="lang-option" data-code="hi">हिन्दी (Hindi)</button>
+                    <button type="button" class="lang-option" data-code="mr">मराठी (Marathi)</button>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li onclick="window.location.href='about.html'">ℹ️ ABOUT</li>
+                <li onclick="window.location.href='help.html'">❓ HELP</li>
+                <li onclick="window.location.href='feedback.html'">💬 FEEDBACK</li>
+                <li class="quiz-btn" onclick="window.location.href='quiz.html'">📝 QUIZ SECTION</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="layout-container">
+        <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+        <aside id="leftSidebar" class="left-sidebar">
+            <div class="sidebar-content">
+                <button class="close-sidebar-btn" onclick="toggleSidebar()">×</button>
+                <ul class="sidebar-mobile-nav">
+                    <li onclick="window.location.href='about.html'">ℹ️ About</li>
+                    <li onclick="window.location.href='help.html'">❓ Help</li>
+                    <li onclick="window.location.href='feedback.html'">💬 Feedback</li>
+                    <li class="quiz-mobile-btn" onclick="window.location.href='quiz.html'">📝 Take a Quiz</li>
+                </ul>
+
+                <h3>Site Options</h3>
+                <ul class="site-options-list">
+                    <li>1. Cyber Security</li>
+                    <li>2. Child Safety</li>
+                    <li>3. Personal Safety</li>
+                    <li>4. Women Safety</li>
+                    <li>5. Digital Safety</li>
+                    <li>6. Financial Safety</li>
+                </ul>
+
+                <div class="theme-selector-container">
+                    <label for="themeSelect" class="theme-label">🎨 Appearance</label>
+                    <div class="select-wrapper">
+                        <select id="themeSelect" class="theme-dropdown" onchange="changeTheme(this.value)">
+                            <option value="emerald">Emerald Green</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="purple">Royal Purple</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <div id="topic-selection-view">
+                <h2 class="section-title">Select a Quiz Topic</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Test your knowledge with 10 questions dynamically generated on demand by AI.</p>
+                <div class="topic-grid">
+                    <div class="topic-card" onclick="startQuiz('cyber')">
+                        <div class="topic-icon">💻</div>
+                        <h4>Cyber Security</h4>
+                    </div>
+                    <div class="topic-card" onclick="startQuiz('child')">
+                        <div class="topic-icon">🧸</div>
+                        <h4>Child Safety</h4>
+                    </div>
+                    <div class="topic-card" onclick="startQuiz('personal')">
+                        <div class="topic-icon">🛡️</div>
+                        <h4>Personal Safety</h4>
+                    </div>
+                    <div class="topic-card" onclick="startQuiz('women')">
+                        <div class="topic-icon">👩🏽</div>
+                        <h4>Women Safety</h4>
+                    </div>
+                    <div class="topic-card" onclick="startQuiz('digital')">
+                        <div class="topic-icon">🌐</div>
+                        <h4>Digital Safety</h4>
+                    </div>
+                    <div class="topic-card" onclick="startQuiz('financial')">
+                        <div class="topic-icon">💳</div>
+                        <h4>Financial Safety</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div id="active-quiz-view" style="display: none;">
+                <button class="back-btn" onclick="showTopics()">← Back to Topics</button>
+                <h2 class="section-title" id="quiz-title">Quiz</h2>
+                <div id="questions-container"></div>
+                <button class="submit-quiz-btn" onclick="submitQuiz()">Submit Quiz</button>
+            </div>
+
+            <div id="results-view" style="display: none; text-align: center; padding: 3rem 1rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🏆</div>
+                <h2 class="section-title" style="justify-content: center;">Quiz Completed!</h2>
+                <h1 style="font-size: 3rem; color: var(--primary-blue); margin: 1rem 0;" id="score-display">0 / 10</h1>
+                <p id="score-message" style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem;"></p>
+                <button class="submit-quiz-btn" onclick="showTopics()">Choose Another Topic</button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- SAFEBOT CHAT WINDOW -->
+    <div class="safebot-modal" id="safebotModal">
+        <div class="safebot-header">
+            <div class="safebot-title">🤖 SafeBot AI</div>
+            <button class="safebot-close" onclick="toggleSafeBot()">×</button>
+        </div>
+        <div class="safebot-messages" id="safebotMessages">
+            <div class="bot-msg">Hello! I am SafeBot, your personal safety and security assistant. Ask me anything about scams, cyber safety, or physical protection.</div>
+            <div class="typing-indicator" id="safebotTyping">SafeBot is thinking...</div>
+        </div>
+        <div class="safebot-input-area">
+            <input type="text" id="safebotInput" placeholder="Ask a safety question..." onkeypress="handleSafeBotEnter(event)">
+            <button onclick="sendSafeBotMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function googleTranslateInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,mr', autoDisplay: false }, 'google_translate_element');
+            setTimeout(function() {
+                var savedLang = localStorage.getItem('safeSphereLang');
+                if (savedLang && savedLang !== 'en') {
+                    var selectField = document.querySelector('.goog-te-combo');
+                    if (selectField) { selectField.value = savedLang; selectField.dispatchEvent(new Event('change')); }
+                }
+            }, 1000); 
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script src="script.js"></script>
+</body>
+</html>

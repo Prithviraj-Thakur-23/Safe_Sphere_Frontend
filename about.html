@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Sphere - About Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <header>
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <a href="index.html" class="logo-container">
+                <img src="safe-sphere-logo.png" alt="Safe Sphere Logo" class="logo-img">
+                <div class="logo-text notranslate">Safe Sphere</div>
+            </a>
+        </div>
+        
+        <button class="safebot-btn" onclick="toggleSafeBot()">🤖 Ask SafeBot</button>
+        
+        <div class="header-right">
+            <div class="lang-dropdown" id="langDropdownContainer">
+                <button class="lang-btn" id="langBtn" type="button">
+                    🌐 <span id="currentLang">ENG</span> <span class="arrow">▾</span>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <button type="button" class="lang-option" data-code="en">English</button>
+                    <button type="button" class="lang-option" data-code="hi">हिन्दी (Hindi)</button>
+                    <button type="button" class="lang-option" data-code="mr">मराठी (Marathi)</button>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li onclick="window.location.href='about.html'" style="color: var(--primary-blue);">ℹ️️ ABOUT</li>
+                <li onclick="window.location.href='help.html'">❓ HELP</li>
+                <li onclick="window.location.href='feedback.html'">💬 FEEDBACK</li>
+                <li class="quiz-btn" onclick="window.location.href='quiz.html'">📝 QUIZ SECTION</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="safety-ticker">
+        <div class="ticker-label">🔔 SAFETY UPDATE</div>
+        <div class="ticker-wrapper">
+            <div class="ticker-content">
+                <span>Never share your OTP, PIN or UPI password with anyone</span>
+                <span>•</span>
+                <span>Stay alert against online scams and phishing messages</span>
+                <span>•</span>
+                <span>Learn how to protect yourself from digital fraud</span>
+                <span>•</span>
+                <span>New safety awareness resources available on SafeSphere</span>
+                <span>•</span>
+                <span>Never share your OTP, PIN or UPI password with anyone</span>
+                <span>•</span>
+                <span>Stay alert against online scams and phishing messages</span>
+                <span>•</span>
+                <span>Learn how to protect yourself from digital fraud</span>
+                <span>•</span>
+                <span>New safety awareness resources available on SafeSphere</span>
+                <span>•</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="layout-container">
+        
+        <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+        <aside id="leftSidebar" class="left-sidebar">
+            <div class="sidebar-content">
+                <button class="close-sidebar-btn" onclick="toggleSidebar()">×</button>
+                
+                <ul class="sidebar-mobile-nav">
+                    <li onclick="window.location.href='about.html'" style="color: var(--primary-blue);">ℹ About</li>
+                    <li onclick="window.location.href='help.html'">❓ Help</li>
+                    <li onclick="window.location.href='feedback.html'">💬 Feedback</li>
+                    <li class="quiz-mobile-btn" onclick="window.location.href='quiz.html'">📝 Take a Quiz</li>
+                </ul>
+
+                <h3>Site Options</h3>
+                <ul class="site-options-list">
+                    <li>1. Cyber Security</li>
+                    <li>2. Child Safety</li>
+                    <li>3. Personal Safety</li>
+                    <li>4. Women Safety</li>
+                    <li>5. Digital Safety</li>
+                    <li>6. Financial Safety</li>
+                </ul>
+                
+                <div class="theme-selector-container">
+                    <label for="themeSelect" class="theme-label">🎨 Appearance</label>
+                    <div class="select-wrapper">
+                        <select id="themeSelect" class="theme-dropdown" onchange="changeTheme(this.value)">
+                            <option value="emerald">Emerald Green</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="purple">Royal Purple</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content about-main-content">
+            <section class="about-hero">
+                <img src="safe-sphere-logo.png" alt="Safe Sphere Logo" class="about-logo">
+                <h1 class="notranslate">SafeSphere</h1>
+                <p class="about-tagline">A Unified Platform for Digital, Financial and Personal Safety</p>
+                <p class="about-description">
+                    SafeSphere is a safety awareness platform created to provide simple, practical and accessible safety information in one place. Our goal is to help people understand different risks, identify warning signs and know the right steps to take when they face a safety-related situation.
+                </p>
+            </section>
+
+            <section class="about-box">
+                <h2>🛡️ About Our Project</h2>
+                <p>SafeSphere was developed as a Community Engagement Project to spread awareness about digital, financial, personal and community safety.</p>
+                <p>The platform brings safety awareness resources, information about common scams and threats, emergency contacts, reporting guidance and useful awareness content together in one user-friendly website.</p>
+                <p>Our focus is not only on explaining a problem, but also on helping users understand what they can do to prevent it and where they can seek help.</p>
+            </section>
+     
+            <section class="about-box">
+                <h2>👥 Meet Our Team</h2>
+                <p class="team-description">
+                    SafeSphere is developed as a team project. Every team member contributes to different areas such as research, information verification, content, design, development, testing and project documentation.
+                </p>
+
+                <div class="team-grid">
+                    <div class="team-card">
+                        <video controls poster="safe-sphere-logo.png">
+                            <source src="videos/member1.mp4" type="video/mp4">
+                            Your browser does not support video playback.
+                        </video>
+                        <h3>Niraj Raghunath Taywade</h3>
+                        <span>Team Leader</span>
+                        <p>Project coordination, team management and development.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <video controls poster="safe-sphere-logo.png">
+                            <source src="videos/member2.mp4" type="video/mp4">
+                        </video>
+                        <h3>Prithviraj Rajesh Thakur</h3>
+                        <span>Overall Project Coordinator</span>
+                        <p>Project coordination, overall planning and development.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <video controls poster="safe-sphere-logo.png">
+                            <source src="videos/member3.mp4" type="video/mp4">
+                        </video>
+                        <h3>Rohit Vinay Tidke</h3>
+                        <span>Website Management</span>
+                        <p>Website structure, content management and development.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <video controls poster="safe-sphere-logo.png">
+                            <source src="videos/member4.mp4" type="video/mp4">
+                        </video>
+                        <h3>Pranav Prashant Jadhav</h3>
+                        <span>Discipline Coordinator</span>
+                        <p>Team discipline, task coordination and progress tracking.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <video controls poster="safe-sphere-logo.png">
+                            <source src="videos/member5.mp4" type="video/mp4">
+                        </video>
+                        <h3>Yogesh Darbarsingh Rathod</h3>
+                        <span>Frontend Management</span>
+                        <p>Frontend design and user interface development.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <video controls poster="safe-sphere-logo.png">
+                            <source src="videos/member6.mp4" type="video/mp4">
+                        </video>
+                        <h3>Shantanu Vinod Rahate</h3>
+                        <span>Information Verification</span>
+                        <p>Information checking and content accuracy.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <video controls poster="safe-sphere-logo.png">
+                            <source src="videos/member7.mp4" type="video/mp4">
+                        </video>
+                        <h3>Yash Ajaysingh Chauhan</h3>
+                        <span>Photography & Video Editing</span>
+                        <p>Project & survey photography, video recording and editing.</p>
+                    </div>
+
+                    <div class="group-photo-card">
+                        <img src="group-photo.jpeg" alt="SafeSphere Team">
+                        <div class="group-photo-overlay">
+                            <h3>Team SafeSphere</h3>
+                            <p>Working together for a safer community</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-box mentor-box">
+                <h2>🎓 Project Guidance</h2>
+                <p><strong>Project Mentor:</strong> Prof. V. U. Deshmukh</p>
+                <p>Department of Computer Science & Engineering (Artificial Intelligence & Machine Learning)</p>
+            </section>
+
+            <section class="about-mission">
+                <h2>🎯 Our Mission</h2>
+                <p>
+                    Our mission is to make safety awareness simple, accessible and actionable. SafeSphere aims to help people recognize risks, understand the right response and find appropriate help when they need it.
+                </p>
+                <div class="mission-tags">
+                    <span>Awareness</span>
+                    <span>Prevention</span>
+                    <span>Response</span>
+                </div>
+            </section>
+        </main>
+
+        <aside class="right-sidebar about-right-sidebar">
+            <div class="news-sidebar-header">
+                <div class="live-badge"><span class="live-dot"></span> TEAM SAFE SPHERE</div>
+            </div>
+            
+            <div class="news-ticker-wrapper" style="margin-top: 1rem;">
+                <div class="news-ticker-track">
+                    <div class="news-item">
+                        <span class="news-time">ABOUT</span>
+                        Meet the team behind SafeSphere.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">PROJECT</span>
+                        Building awareness for a safer community.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">TEAM</span>
+                        Working together through research, development and community engagement.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">ABOUT</span>
+                        Meet the team behind SafeSphere.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">PROJECT</span>
+                        Building awareness for a safer community.
+                    </div>
+                    <div class="news-item">
+                        <span class="news-time">TEAM</span>
+                        Working together through research, development and community engagement.
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- SAFEBOT CHAT WINDOW -->
+    <div class="safebot-modal" id="safebotModal">
+        <div class="safebot-header">
+            <div class="safebot-title">🤖 SafeBot AI</div>
+            <button class="safebot-close" onclick="toggleSafeBot()">×</button>
+        </div>
+        <div class="safebot-messages" id="safebotMessages">
+            <div class="bot-msg">Hello! I am SafeBot, your personal safety and security assistant. Ask me anything about scams, cyber safety, or physical protection.</div>
+            <div class="typing-indicator" id="safebotTyping">SafeBot is thinking...</div>
+        </div>
+        <div class="safebot-input-area">
+            <input type="text" id="safebotInput" placeholder="Ask a safety question..." onkeypress="handleSafeBotEnter(event)">
+            <button onclick="sendSafeBotMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function googleTranslateInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,mr', autoDisplay: false }, 'google_translate_element');
+            setTimeout(function() {
+                var savedLang = localStorage.getItem('safeSphereLang');
+                if (savedLang && savedLang !== 'en') {
+                    var selectField = document.querySelector('.goog-te-combo');
+                    if (selectField) {
+                        selectField.value = savedLang;
+                        selectField.dispatchEvent(new Event('change'));
+                    }
+                }
+            }, 1000); 
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script src="script.js"></script>
+</body>
+</html>

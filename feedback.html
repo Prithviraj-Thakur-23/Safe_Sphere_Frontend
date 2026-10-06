@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Sphere - Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <header>
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <a href="index.html" class="logo-container">
+                <img src="safe-sphere-logo.png" alt="Safe Sphere Logo" class="logo-img">
+                <div class="logo-text notranslate">Safe Sphere</div>
+            </a>
+        </div>
+        
+        <button class="safebot-btn" onclick="toggleSafeBot()">🤖 Ask SafeBot</button>
+        
+        <div class="header-right">
+            <div class="lang-dropdown" id="langDropdownContainer">
+                <button class="lang-btn" id="langBtn" type="button">
+                    🌐 <span id="currentLang">ENG</span> <span class="arrow">▾</span>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <button type="button" class="lang-option" data-code="en">English</button>
+                    <button type="button" class="lang-option" data-code="hi">हिन्दी (Hindi)</button>
+                    <button type="button" class="lang-option" data-code="mr">मराठी (Marathi)</button>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li onclick="window.location.href='about.html'">ℹ️ ABOUT</li>
+                <li onclick="window.location.href='help.html'">❓ HELP</li>
+                <li onclick="window.location.href='feedback.html'" style="color: var(--primary-blue);">💬 FEEDBACK</li>
+                <li class="quiz-btn" onclick="window.location.href='quiz.html'">📝 QUIZ SECTION</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="layout-container">
+        <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+        <aside id="leftSidebar" class="left-sidebar">
+            <div class="sidebar-content">
+                <button class="close-sidebar-btn" onclick="toggleSidebar()">×</button>
+                <ul class="sidebar-mobile-nav">
+                    <li onclick="window.location.href='about.html'">ℹ About</li>
+                    <li onclick="window.location.href='help.html'">❓ Help</li>
+                    <li onclick="window.location.href='feedback.html'" style="color: var(--primary-blue);">💬 Feedback</li>
+                    <li class="quiz-mobile-btn" onclick="window.location.href='quiz.html'">📝 Take a Quiz</li>
+                </ul>
+
+                <h3>Site Options</h3>
+                <ul class="site-options-list">
+                    <li>1. Cyber Security</li>
+                    <li>2. Child Safety</li>
+                    <li>3. Personal Safety</li>
+                    <li>4. Women Safety</li>
+                    <li>5. Digital Safety</li>
+                    <li>6. Financial Safety</li>
+                </ul>
+
+                <div class="theme-selector-container">
+                    <label for="themeSelect" class="theme-label">🎨 Appearance</label>
+                    <div class="select-wrapper">
+                        <select id="themeSelect" class="theme-dropdown" onchange="changeTheme(this.value)">
+                            <option value="emerald">Emerald Green</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="purple">Royal Purple</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <h2 class="section-title">Community Feedback</h2>
+            
+            <div class="feedback-layout">
+                <div class="feedback-form-card">
+                    <h3>Leave a Review</h3>
+                    <p class="fb-subtitle">Help us improve Safe Sphere by sharing your experience.</p>
+                    
+                    <form id="feedbackForm" onsubmit="handleFeedbackSubmit(event)">
+                        <div class="input-group">
+                            <label>Name</label>
+                            <input type="text" id="fbName" placeholder="John Doe" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Email Address <span class="security-note">(Verified securely)</span></label>
+                            <input type="email" id="fbEmail" placeholder="yourname@domain.com" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Rate Us</label>
+                            <div class="star-rating" id="starContainer">
+                                <span class="star" data-val="1">★</span>
+                                <span class="star" data-val="2">★</span>
+                                <span class="star" data-val="3">★</span>
+                                <span class="star" data-val="4">★</span>
+                                <span class="star" data-val="5">★</span>
+                            </div>
+                            <input type="hidden" id="fbRating" value="0">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Your Feedback</label>
+                            <textarea id="fbText" rows="4" placeholder="What did you like? What can we do better?" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-feedback-btn" id="fbSubmitBtn">Post Feedback</button>
+                        <p id="fbStatus" class="fb-status"></p>
+                    </form>
+                </div>
+
+                <div class="feedback-feed-card">
+                    <h3>Recent Reviews</h3>
+                    <div id="feedbackFeedContainer" class="feed-scroller"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- SAFEBOT CHAT WINDOW -->
+    <div class="safebot-modal" id="safebotModal">
+        <div class="safebot-header">
+            <div class="safebot-title">🤖 SafeBot AI</div>
+            <button class="safebot-close" onclick="toggleSafeBot()">×</button>
+        </div>
+        <div class="safebot-messages" id="safebotMessages">
+            <div class="bot-msg">Hello! I am SafeBot, your personal safety and security assistant. Ask me anything about scams, cyber safety, or physical protection.</div>
+            <div class="typing-indicator" id="safebotTyping">SafeBot is thinking...</div>
+        </div>
+        <div class="safebot-input-area">
+            <input type="text" id="safebotInput" placeholder="Ask a safety question..." onkeypress="handleSafeBotEnter(event)">
+            <button onclick="sendSafeBotMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function googleTranslateInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,mr', autoDisplay: false }, 'google_translate_element');
+            setTimeout(function() {
+                var savedLang = localStorage.getItem('safeSphereLang');
+                if (savedLang && savedLang !== 'en') {
+                    var selectField = document.querySelector('.goog-te-combo');
+                    if (selectField) { selectField.value = savedLang; selectField.dispatchEvent(new Event('change')); }
+                }
+            }, 1000); 
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script src="script.js"></script>
+</body>
+</html>

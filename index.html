@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Sphere</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <header>
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <a href="index.html" class="logo-container">
+                <img src="safe-sphere-logo.png" alt="Safe Sphere Logo" class="logo-img">
+                <div class="logo-text notranslate">Safe Sphere</div>
+            </a>
+        </div>
+        
+        <button class="safebot-btn" onclick="toggleSafeBot()">🤖 Ask SafeBot</button>
+        
+        <div class="header-right">
+            <div class="lang-dropdown" id="langDropdownContainer">
+                <button class="lang-btn" id="langBtn" type="button">
+                    🌐 <span id="currentLang">ENG</span> <span class="arrow">▾</span>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <button type="button" class="lang-option" data-code="en">English</button>
+                    <button type="button" class="lang-option" data-code="hi">हिन्दी (Hindi)</button>
+                    <button type="button" class="lang-option" data-code="mr">मराठी (Marathi)</button>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li onclick="window.location.href='about.html'">ℹ️ ABOUT</li>
+                <li onclick="window.location.href='help.html'">❓ HELP</li>
+                <li onclick="window.location.href='feedback.html'">💬 FEEDBACK</li>
+                <li class="quiz-btn" onclick="window.location.href='quiz.html'">📝 QUIZ SECTION</li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="layout-container">
+        
+        <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+        <aside id="leftSidebar" class="left-sidebar">
+            <div class="sidebar-content">
+                <button class="close-sidebar-btn" onclick="toggleSidebar()">×</button>
+                
+                <ul class="sidebar-mobile-nav">
+                    <li onclick="window.location.href='about.html'">ℹ About</li>
+                    <li onclick="window.location.href='help.html'">❓ Help</li>
+                    <li onclick="window.location.href='feedback.html'">💬 Feedback</li>
+                    <li class="quiz-mobile-btn" onclick="window.location.href='quiz.html'">📝 Take a Quiz</li>
+                </ul>
+
+                <h3>Site Options</h3>
+                <ul class="site-options-list">
+                    <li>1. Cyber Security</li>
+                    <li>2. Child Safety</li>
+                    <li>3. Personal Safety</li>
+                    <li>4. Women Safety</li>
+                    <li>5. Digital Safety</li>
+                    <li>6. Financial Safety</li>
+                </ul>
+                
+                <div class="theme-selector-container">
+                    <label for="themeSelect" class="theme-label">🎨 Appearance</label>
+                    <div class="select-wrapper">
+                        <select id="themeSelect" class="theme-dropdown" onchange="changeTheme(this.value)">
+                            <option value="emerald">Emerald Green</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="purple">Royal Purple</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <div class="ai-carousel-wrapper">
+                <div class="carousel-track" id="aiCarousel" tabindex="0">
+                    <div class="carousel-card">
+                        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline class="bg-video"></video>
+                        <div class="carousel-overlay"></div>
+                        <div class="ai-info">
+                            <div class="ai-text">
+                                <h3>Banking Frauds</h3>
+                                <p>Watch how attackers clone banking portals and intercept your OTPs in real-time.</p>
+                            </div>
+                            <button class="view-more-btn">View More</button>
+                        </div>
+                    </div>
+                    <div class="carousel-card">
+                        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline class="bg-video"></video>
+                        <div class="carousel-overlay"></div>
+                        <div class="ai-info">
+                            <div class="ai-text">
+                                <h3>ATM Skimming</h3>
+                                <p>Visual demonstration of how invisible card skimmers and micro-cameras are attached.</p>
+                            </div>
+                            <button class="view-more-btn">View More</button>
+                        </div>
+                    </div>
+                    <div class="carousel-card">
+                        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline class="bg-video"></video>
+                        <div class="carousel-overlay"></div>
+                        <div class="ai-info">
+                            <div class="ai-text">
+                                <h3>SIM Swapping</h3>
+                                <p>See the exact process fraudsters use to trick telecom operators into hijacking your phone.</p>
+                            </div>
+                            <button class="view-more-btn">View More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-split">
+                <div class="emergency-box">
+                    <h2>🚨 Emergency Contacts</h2>
+                    <div class="scrolling-numbers-container">
+                        <div class="scrolling-track">
+                            <div class="number-card">
+                                <div class="number-info">
+                                    <h4>National Cyber Crime</h4>
+                                    <div class="phone">1930</div>
+                                </div>
+                                <a href="tel:1930" class="call-icon-btn">📞</a>
+                            </div>
+                            <div class="number-card">
+                                <div class="number-info">
+                                    <h4>Women Helpline</h4>
+                                    <div class="phone">1091</div>
+                                </div>
+                                <a href="tel:1091" class="call-icon-btn">📞</a>
+                            </div>
+                            <div class="number-card">
+                                <div class="number-info">
+                                    <h4>Child Helpline</h4>
+                                    <div class="phone">1098</div>
+                                </div>
+                                <a href="tel:1098" class="call-icon-btn">📞</a>
+                            </div>
+                            <div class="number-card">
+                                <div class="number-info">
+                                    <h4>Police Control Room</h4>
+                                    <div class="phone">112</div>
+                                </div>
+                                <a href="tel:112" class="call-icon-btn">📞</a>
+                            </div>
+                            <div class="number-card">
+                                <div class="number-info">
+                                    <h4>Ambulance</h4>
+                                    <div class="phone">108</div>
+                                </div>
+                                <a href="tel:108" class="call-icon-btn">📞</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="complaints-box">
+                    <h2 class="section-title">Register Complaints</h2>
+                    <div class="complaints-grid">
+                        <div class="complaint-card" onclick="openModal('Cyber Crime Portal', 'https://cybercrime.gov.in')">
+                            <div class="complaint-icon">🛡️</div>
+                            <h4>Cyber Crime</h4>
+                        </div>
+                        <div class="complaint-card" onclick="openModal('National Commission for Women', 'https://ncwapps.nic.in/')">
+                            <div class="complaint-icon">👩🏽</div>
+                            <h4>Women's Safety</h4>
+                        </div>
+                        <div class="complaint-card" onclick="openModal('PENCIL Portal', 'https://pencil.gov.in/')">
+                            <div class="complaint-icon">🧸</div>
+                            <h4>Child Safety</h4>
+                        </div>
+                        <div class="complaint-card" onclick="openModal('National Consumer Helpline', 'https://consumerhelpline.gov.in/')">
+                            <div class="complaint-icon">💳</div>
+                            <h4>Financial Fraud</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scanner-box">
+                <h2 class="section-title">🛡️ AI Threat Scanner</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Analyze suspicious emails, photos, and voice notes for deepfakes and scams using our backend neural analyzers.</p>
+                
+                <div class="scanner-tabs">
+                    <button class="scan-tab active" id="tab-email" onclick="switchScanTab('email')">✉ Email Phishing & Forensics</button>
+                    <button class="scan-tab" id="tab-media" onclick="switchScanTab('media')">🖼️ Image/Video Deepfake</button>
+                    <button class="scan-tab" id="tab-voice" onclick="switchScanTab('voice')">🎙️ AI Voice Clone</button>
+                </div>
+
+                <div class="scan-body" id="body-email">
+                    <textarea id="scan-email-input" placeholder="Paste the raw email source code (headers + body) or text here for deep forensic analysis..."></textarea>
+                </div>
+                
+                <div class="scan-body" id="body-media" style="display:none;">
+                    <div class="file-drop-area">
+                        <span style="font-size: 2rem;">📸</span><br>
+                        <strong>Click to Choose File</strong><br>Upload an image or video file to check for AI generation artifacts.
+                        <input type="file" style="display:none;">
+                    </div>
+                </div>
+
+                <div class="scan-body" id="body-voice" style="display:none;">
+                    <div class="file-drop-area">
+                        <span style="font-size: 2rem;">🔊</span><br>
+                        <strong>Click to Choose File</strong><br>Upload an audio clip to analyze spectral frequencies for voice cloning.
+                        <input type="file" style="display:none;">
+                    </div>
+                </div>
+
+                <button class="scan-btn" onclick="runScanner()">Run Security Scan</button>
+
+                <div class="scan-progress" id="scan-progress">
+                    <div class="scan-progress-bar" id="scan-progress-bar"></div>
+                </div>
+
+                <div class="scan-result-box" id="scan-result-box">
+                    <p id="scan-result-text"></p>
+                </div>
+            </div>
+
+        </main>
+
+        <aside class="right-sidebar">
+            <div class="news-sidebar-header">
+                <div class="live-badge"><span class="live-dot"></span> DAILY CRIME ALERTS</div>
+                <span class="news-sub-badge" id="newsDateStamp">Live Feed</span>
+            </div>
+            <p class="news-helper-text">Verified incidents resulting from safety lapses. Tap to read full news.</p>
+
+            <div class="news-ticker-wrapper">
+                <div class="news-ticker-track" id="newsTickerTrack"></div>
+            </div>
+        </aside>
+
+    </div>
+
+    <div id="complaintModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Portal Name</h2>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <ol class="modal-steps">
+                <li>Click the link below to securely visit the official government portal.</li>
+                <li>Register or login using your registered mobile number & OTP.</li>
+                <li>Navigate to the "Report an Incident" section.</li>
+                <li>Fill in the mandatory details accurately (Date, Time, Evidence).</li>
+                <li>Submit the form and save your acknowledgment number safely.</li>
+            </ol>
+            <a href="#" id="modalLink" class="govt-link" target="_blank">Proceed to Official Website</a>
+        </div>
+    </div>
+
+    <!-- SAFEBOT CHAT WINDOW -->
+    <div class="safebot-modal" id="safebotModal">
+        <div class="safebot-header">
+            <div class="safebot-title">🤖 SafeBot AI</div>
+            <button class="safebot-close" onclick="toggleSafeBot()">×</button>
+        </div>
+        <div class="safebot-messages" id="safebotMessages">
+            <div class="bot-msg">Hello! I am SafeBot, your personal safety and security assistant. Ask me anything about scams, cyber safety, or physical protection.</div>
+            <div class="typing-indicator" id="safebotTyping">SafeBot is thinking...</div>
+        </div>
+        <div class="safebot-input-area">
+            <input type="text" id="safebotInput" placeholder="Ask a safety question..." onkeypress="handleSafeBotEnter(event)">
+            <button onclick="sendSafeBotMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function googleTranslateInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,mr', autoDisplay: false }, 'google_translate_element');
+            setTimeout(function() {
+                var savedLang = localStorage.getItem('safeSphereLang');
+                if (savedLang && savedLang !== 'en') {
+                    var selectField = document.querySelector('.goog-te-combo');
+                    if (selectField) {
+                        selectField.value = savedLang;
+                        selectField.dispatchEvent(new Event('change'));
+                    }
+                }
+            }, 1000); 
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script src="script.js"></script>
+</body>
+</html>
