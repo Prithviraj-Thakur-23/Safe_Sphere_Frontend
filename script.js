@@ -9,61 +9,76 @@ function changeTheme(themeName) {
 }
 
 // =========================================================
-// 2. LANGUAGE TRANSLATION CONTROLLER
+// 2. LANGUAGE TRANSLATION CONTROLLER (UPDATED FOR GLOBAL SYNC)
 // =========================================================
-function setLanguage(langCode) {
-    localStorage.setItem('safeSphereLang', langCode);
-    const langMap = { 'en': 'ENG', 'hi': 'HIN', 'mr': 'MAR' };
-    const currentLangEl = document.getElementById('currentLang');
-    if(currentLangEl) currentLangEl.innerText = langMap[langCode];
-
-    const selectField = document.querySelector('.goog-te-combo');
-    if (selectField) {
-        selectField.value = langCode === 'en' ? '' : langCode; 
-        selectField.dispatchEvent(new Event('change'));
-    }
-
-    if (langCode === 'en') {
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        setTimeout(() => location.reload(), 200); 
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Restore Theme
     const savedTheme = localStorage.getItem('safeSphereTheme') || 'emerald';
     changeTheme(savedTheme);
 
+    // 2. Restore Language UI Text
     const savedLang = localStorage.getItem('safeSphereLang') || 'en';
     const langMap = { 'en': 'ENG', 'hi': 'HIN', 'mr': 'MAR' };
     const currentLangEl = document.getElementById('currentLang');
-    if(currentLangEl) currentLangEl.innerText = langMap[savedLang];
+    if(currentLangEl) currentLangEl.innerText = langMap[savedLang] || savedLang.toUpperCase();
 
+    // Initialize other modules
     if (document.getElementById('newsTickerTrack')) renderDailyCrimeNews();
     if (document.getElementById('feedbackForm')) initFeedbackSystem();
-    initFileUploadListeners();
+    if (typeof initFileUploadListeners === 'function') initFileUploadListeners();
 });
 
 const langBtn = document.getElementById('langBtn');
 const langMenu = document.getElementById('langMenu');
 
 if (langBtn && langMenu) {
+    // Open/Close Dropdown
     langBtn.addEventListener('click', (event) => {
         event.stopPropagation();
         langMenu.classList.toggle('show');
     });
+
+    // Handle Language Selection
     const langOptions = langMenu.querySelectorAll('.lang-option');
     langOptions.forEach(option => {
         option.addEventListener('click', (event) => {
             event.stopPropagation();
-            const selectedCode = option.getAttribute('data-code');
+            
+            // Get selected code ('en', 'hi', 'mr')
+            const selectedCode = option.getAttribute('data-code').toLowerCase(); 
+            
+            // Save globally so it persists across pages
+            localStorage.setItem('safeSphereLang', selectedCode);
+            
+            // Update the button text immediately
+            const langMap = { 'en': 'ENG', 'hi': 'HIN', 'mr': 'MAR' };
+            const currentLangEl = document.getElementById('currentLang');
+            if(currentLangEl) currentLangEl.innerText = langMap[selectedCode] || selectedCode.toUpperCase();
+            
+            // Close the menu
             langMenu.classList.remove('show');
-            if (localStorage.getItem('safeSphereLang') !== selectedCode) {
-                setLanguage(selectedCode);
+            
+            // Trigger Google Translate logic
+            const googleSelect = document.querySelector('.goog-te-combo');
+            if (googleSelect) {
+                googleSelect.value = selectedCode;
+                googleSelect.dispatchEvent(new Event('change'));
+            }
+
+            // If switching back to English, clear Google's translation cookies and reload to restore original HTML
+            if (selectedCode === 'en') {
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
+                setTimeout(() => location.reload(), 200); 
             }
         });
     });
+
+    // Click outside to close
     window.addEventListener('click', (event) => {
-        if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) langMenu.classList.remove('show');
+        if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
+            langMenu.classList.remove('show');
+        }
     });
 }
 
@@ -88,10 +103,10 @@ function toggleSidebar() {
 
 window.addEventListener('resize', () => {
     if (window.innerWidth > 768) {
-        overlay.classList.remove('show');
+        if(overlay) overlay.classList.remove('show');
         document.body.style.overflow = 'hidden'; 
-        leftSidebar.classList.remove('open');
-    } else if (!leftSidebar.classList.contains('open')) {
+        if(leftSidebar) leftSidebar.classList.remove('open');
+    } else if (leftSidebar && !leftSidebar.classList.contains('open')) {
         document.body.style.overflow = ''; 
     }
 });
@@ -153,11 +168,14 @@ window.switchScanTab = function(tabId) {
     document.querySelectorAll('.scan-body').forEach(b => b.style.display = 'none');
     document.getElementById('tab-' + tabId).classList.add('active');
     document.getElementById('body-' + tabId).style.display = 'block';
-    document.getElementById('scan-result-box').style.display = 'none'; 
+    const resultBox = document.getElementById('scan-result-box');
+    if(resultBox) resultBox.style.display = 'none'; 
 }
 
 window.runScanner = async function() {
-    const activeTab = document.querySelector('.scan-tab.active').id.replace('tab-', '');
+    const activeTabObj = document.querySelector('.scan-tab.active');
+    if(!activeTabObj) return;
+    const activeTab = activeTabObj.id.replace('tab-', '');
     const progress = document.getElementById('scan-progress');
     const progressBar = document.getElementById('scan-progress-bar');
     const resultBox = document.getElementById('scan-result-box');
@@ -230,16 +248,20 @@ window.runScanner = async function() {
 function initFileUploadListeners() {
     document.querySelectorAll('.file-drop-area').forEach(area => {
         area.addEventListener('click', () => {
-            area.querySelector('input[type="file"]').click();
+            const fileInput = area.querySelector('input[type="file"]');
+            if(fileInput) fileInput.click();
         });
         
-        area.querySelector('input[type="file"]').addEventListener('change', (e) => {
-            if(e.target.files[0]) {
-                const fileName = e.target.files[0].name;
-                area.innerHTML = `<span style="font-size: 2rem;">📁</span><br><strong>Selected:</strong> ${fileName}`;
-                area.appendChild(e.target);
-            }
-        });
+        const fileInput = area.querySelector('input[type="file"]');
+        if(fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                if(e.target.files[0]) {
+                    const fileName = e.target.files[0].name;
+                    area.innerHTML = `<span style="font-size: 2rem;">📁</span><br><strong>Selected:</strong> ${fileName}`;
+                    area.appendChild(e.target);
+                }
+            });
+        }
     });
 }
 
@@ -328,7 +350,7 @@ function renderDailyCrimeNews() {
 }
 
 // =========================================================
-// 8. FEEDBACK ALGORITHM & LOGIC
+// 8. GLOBAL SERVER-CONNECTED FEEDBACK SYSTEM
 // =========================================================
 function initFeedbackSystem() {
     renderFeedbacks();
@@ -338,7 +360,7 @@ function initFeedbackSystem() {
     stars.forEach(star => {
         star.addEventListener('click', function() {
             const val = this.getAttribute('data-val');
-            ratingInput.value = val;
+            if(ratingInput) ratingInput.value = val;
             stars.forEach(s => {
                 s.classList.remove('active');
                 if (s.getAttribute('data-val') <= val) s.classList.add('active');
@@ -347,7 +369,7 @@ function initFeedbackSystem() {
     });
 }
 
-window.handleFeedbackSubmit = function(event) {
+window.handleFeedbackSubmit = async function(event) {
     event.preventDefault();
     const name = document.getElementById('fbName').value.trim();
     const email = document.getElementById('fbEmail').value.trim();
@@ -359,22 +381,32 @@ window.handleFeedbackSubmit = function(event) {
     if (!validateEmailAlgorithm(email)) { statusEl.style.color = "var(--accent-red)"; statusEl.innerText = "Please enter a genuine, active email address."; return; }
 
     statusEl.style.color = "var(--text-muted)";
-    statusEl.innerText = "Verifying email and submitting...";
+    statusEl.innerText = "Submitting feedback...";
     
-    setTimeout(() => {
-        let feedbacks = JSON.parse(localStorage.getItem('safeSphereFeedbacks')) || [];
-        feedbacks.unshift({ id: Date.now(), name: name, email: email, rating: parseInt(rating), text: text, date: new Date().toLocaleDateString() });
-        localStorage.setItem('safeSphereFeedbacks', JSON.stringify(feedbacks));
+    try {
+        const response = await fetch('https://safe-sphere-backend-v6sg.onrender.com/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, rating, text })
+        });
 
-        renderFeedbacks();
-        document.getElementById('feedbackForm').reset();
-        document.getElementById('fbRating').value = "0";
-        document.querySelectorAll('.star-rating .star').forEach(s => s.classList.remove('active'));
-        
-        statusEl.style.color = "var(--primary-blue)";
-        statusEl.innerText = "Feedback posted successfully!";
-        setTimeout(() => statusEl.innerText = "", 3000);
-    }, 1200);
+        const data = await response.json();
+        if(data.success) {
+            renderFeedbacksFromServer(data.feedbacks);
+            document.getElementById('feedbackForm').reset();
+            document.getElementById('fbRating').value = "0";
+            document.querySelectorAll('.star-rating .star').forEach(s => s.classList.remove('active'));
+            
+            statusEl.style.color = "var(--primary-blue)";
+            statusEl.innerText = "Feedback posted successfully!";
+            setTimeout(() => statusEl.innerText = "", 3000);
+        } else {
+            throw new Error();
+        }
+    } catch (error) {
+        statusEl.style.color = "var(--accent-red)";
+        statusEl.innerText = "Failed to connect to server.";
+    }
 }
 
 function validateEmailAlgorithm(email) {
@@ -382,17 +414,22 @@ function validateEmailAlgorithm(email) {
     return !['test.com', 'example.com', 'fake.com', 'email.com', 'mailinator.com', '10minutemail.com', 'tempmail.com', 'yopmail.com'].includes(email.split('@')[1].toLowerCase());
 }
 
-function renderFeedbacks() {
+async function renderFeedbacks() {
     const feedContainer = document.getElementById('feedbackFeedContainer');
     if (!feedContainer) return;
 
-    let feedbacks = JSON.parse(localStorage.getItem('safeSphereFeedbacks')) || [];
-    if (feedbacks.length === 0) {
-        feedbacks = [
-            { name: "Rahul S.", rating: 5, date: "10/12/2023", text: "The Cyber Security quiz opened my eyes to how easy it is to get phished. Great platform!" },
-            { name: "Priya M.", rating: 4, date: "10/10/2023", text: "Very helpful emergency contact section. I feel much safer having this bookmarked." }
-        ];
+    try {
+        const response = await fetch('https://safe-sphere-backend-v6sg.onrender.com/api/feedbacks');
+        const feedbacks = await response.json();
+        renderFeedbacksFromServer(feedbacks);
+    } catch (error) {
+        console.error("Failed to load feedbacks from server");
     }
+}
+
+function renderFeedbacksFromServer(feedbacks) {
+    const feedContainer = document.getElementById('feedbackFeedContainer');
+    if (!feedContainer) return;
 
     feedContainer.innerHTML = '';
     feedbacks.forEach(fb => {
@@ -426,7 +463,6 @@ window.startQuiz = async function(topicCode) {
     if(resultsView) resultsView.style.display = 'none';
     if(quizView) quizView.style.display = 'block';
     
-    // UI FIX: Removed references to Gemini here.
     if(questionsContainer) {
         questionsContainer.innerHTML = `
             <div style="text-align:center; padding: 4rem 1rem;">
@@ -476,7 +512,7 @@ window.startQuiz = async function(topicCode) {
         if(questionsContainer) {
             questionsContainer.innerHTML = `
                 <div style="text-align:center; padding: 3rem; color: var(--accent-red);">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️️</div>
                     <h3>Loading Error</h3>
                     <p>Failed to generate AI quiz. Please ensure your backend server is running.</p>
                 </div>
@@ -545,7 +581,7 @@ async function sendSafeBotMessage() {
     inputEl.value = '';
 
     const typingEl = document.getElementById('safebotTyping');
-    typingEl.style.display = 'block';
+    if(typingEl) typingEl.style.display = 'block';
     scrollToChatBottom();
 
     try {
@@ -556,19 +592,21 @@ async function sendSafeBotMessage() {
         });
         
         const data = await response.json();
-        typingEl.style.display = 'none';
+        if(typingEl) typingEl.style.display = 'none';
         
         let formattedReply = data.reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         addChatMessage(formattedReply, 'bot');
 
     } catch (error) {
-        typingEl.style.display = 'none';
+        if(typingEl) typingEl.style.display = 'none';
         addChatMessage("Loading Error: Unable to connect to the SafeBot AI server right now.", 'bot');
     }
 }
 
 function addChatMessage(text, sender) {
     const messagesContainer = document.getElementById('safebotMessages');
+    if(!messagesContainer) return;
+    
     const msgDiv = document.createElement('div');
     msgDiv.className = sender === 'user' ? 'user-msg' : 'bot-msg';
     msgDiv.innerHTML = text;
@@ -580,5 +618,5 @@ function addChatMessage(text, sender) {
 
 function scrollToChatBottom() {
     const messagesContainer = document.getElementById('safebotMessages');
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    if(messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }

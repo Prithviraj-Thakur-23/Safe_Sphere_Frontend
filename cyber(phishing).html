@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing & Scams - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <!-- PREMIUM GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --accent-warning: #D97706;
+            --text-main: #064E3B;
+            --text-muted: #374151;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.1);
+            --shadow-glow: 0 0 20px rgba(5, 150, 105, 0.15);
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --accent-warning: #F59E0B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --accent-warning: #D97706;
+            --text-main: #2E1065;
+            --text-muted: #4C1D95;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.12);
+            --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.18);
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-body); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        
+        h1, h2, h3, h4, h5, h6, .logo-text, .section-heading, .content-title, .example-title {
+            font-family: var(--font-heading);
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- HEADER --- */
+        header { 
+            background: var(--bg-card); 
+            padding: 0 3%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            z-index: 100; 
+            border-bottom: 1px solid var(--border-light); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; }
+        .logo-container:hover { transform: scale(1.03); }
+        .logo-container:active { transform: scale(0.97); }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); box-shadow: var(--shadow-glow); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; white-space: nowrap; }
+
+        /* --- LANGUAGE DROPDOWN --- */
+        .header-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-dropdown { position: relative; }
+        .lang-btn {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 0.45rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: var(--font-heading);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .lang-btn:hover { background: var(--primary-light-bg); border-color: var(--primary-blue); color: var(--primary-blue); transform: translateY(-1px); }
+        .lang-btn .arrow { font-size: 0.75rem; transition: transform 0.2s ease; }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            min-width: 160px;
+            z-index: 1000;
+            overflow: hidden;
+            padding: 0.3rem 0;
+            animation: fadeIn 0.2s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .lang-menu.show { display: block; }
+        .lang-option {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1rem;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lang-option:hover { background: var(--primary-light-bg); color: var(--primary-blue); }
+
+        /* --- MAIN LAYOUT & MAXIMIZED CARD --- */
+        .layout-container { 
+            display: flex; 
+            flex: 1; 
+            height: calc(100vh - var(--header-height)); 
+            overflow: hidden; 
+            padding: 1.2rem 3%;
+        }
+
+        .main-content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1rem; 
+            height: 100%; 
+            width: 100%;
+        }
+
+        .top-nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            background: var(--primary-light-bg);
+            color: var(--text-main);
+            padding: 0.55rem 1.3rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            font-family: var(--font-heading);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+        }
+        .back-btn:hover { 
+            background: var(--primary-blue); 
+            color: #FFFFFF; 
+            border-color: var(--primary-blue);
+            transform: translateX(-4px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* MAXIMIZED DISPLAY CARD */
+        .topic-card-container {
+            flex: 1;
+            background: var(--bg-card);
+            padding: 2.2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-light) transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            scroll-behavior: smooth;
+        }
+
+        /* CONTENT SECTIONS */
+        .content-header {
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: 800;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            padding: 0.3rem 0.85rem;
+            border-radius: 20px;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.6px;
+            border: 1px solid var(--border-light);
+        }
+
+        .content-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-heading {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            position: relative;
+        }
+
+        /* DEFINITION BOX WITH GLOW & GLASS TOUCH */
+        .definition-box {
+            background: linear-gradient(135deg, var(--primary-light-bg) 0%, var(--bg-main) 100%);
+            border-left: 5px solid var(--primary-blue);
+            padding: 1.4rem 1.6rem;
+            border-radius: 0 16px 16px 0;
+            font-size: 1.02rem;
+            color: var(--text-main);
+            line-height: 1.7;
+            box-shadow: var(--shadow);
+            border-top: 1px solid var(--border-light);
+            border-right: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .definition-box p { margin-bottom: 0.6rem; }
+        .definition-box p:last-child { margin-bottom: 0; }
+
+        /* EXAMPLES GRID WITH HOVER ELEVATION */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.3rem;
+        }
+
+        .example-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 1.3rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .example-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .example-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .example-card:hover::before { opacity: 1; }
+
+        .example-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .example-quote {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            font-style: italic;
+            background: var(--bg-card);
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            line-height: 1.5;
+        }
+
+        /* WORKFLOW / STEPS STYLING */
+        .workflow-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.1rem;
+        }
+
+        .step-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 1.3rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-3px);
+        }
+
+        .step-badge {
+            background: var(--primary-blue);
+            color: #FFFFFF;
+            font-size: 0.75rem;
+            font-weight: 800;
+            font-family: var(--font-heading);
+            padding: 0.25rem 0.7rem;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 0.7rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .step-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* 2-COLUMN PANELS FOR TRICKS & RED FLAGS */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .info-box:hover {
+            border-color: var(--border-light);
+        }
+
+        .info-box-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .threat-tag { color: var(--accent-red); }
+        .warning-tag { color: var(--accent-warning); }
+        .safe-tag { color: var(--primary-blue); }
+
+        .bullet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .bullet-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .bullet-icon {
+            font-size: 1.05rem;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+
+        .code-link {
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            padding: 0.15rem 0.45rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.88rem;
+            font-weight: 700;
+            border: 1px solid var(--border-light);
+        }
+
+        /* EMERGENCY HELPLINE BANNER WITH PULSE EFFECT */
+        .emergency-banner {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.12) 0%, rgba(220, 38, 38, 0.05) 100%);
+            border: 2px dashed var(--accent-red);
+            padding: 1.5rem 1.8rem;
+            border-radius: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.2rem;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.08);
+        }
+
+        .emergency-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .pulse-icon {
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .emergency-numbers {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .number-pill {
+            background: var(--accent-red);
+            color: #FFFFFF;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 800;
+            font-family: var(--font-heading);
+            font-size: 0.98rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .number-pill:hover {
+            transform: scale(1.04);
+        }
+
+        /* FOOTER & SOURCE CREDITS */
+        .sources-footer {
+            border-top: 1px solid var(--border-light);
+            padding-top: 1.2rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .source-links {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .source-link {
+            color: var(--primary-blue);
+            font-weight: 600;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+
+        .source-link:hover {
+            color: var(--primary-blue-hover);
+        }
+
+        /* RESPONSIVE LAYOUT */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; }
+            .layout-container { height: auto; padding: 1rem 3%; }
+            header { padding: 1rem 4%; }
+            .topic-card-container { padding: 1.4rem; }
+            .content-title { font-size: 1.7rem; }
+            .info-grid { grid-template-columns: 1fr; }
+            .emergency-banner { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="window.location.href='index.html'">
+                <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/45/059669/FFFFFF?text=SS'">
+                <span class="logo-text">SafeSphere</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="lang-dropdown">
+                <button class="lang-btn" id="langBtn">
+                    🌐 <span id="currentLang">ENG</span> <span class="arrow">▼</span>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <button class="lang-option" data-code="EN">English</button>
+                    <button class="lang-option" data-code="HI">Hindi (हिंदी)</button>
+                    <button class="lang-option" data-code="MR">Marathi (मराठी)</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAYOUT CONTAINER -->
+    <div class="layout-container">
+        <main class="main-content">
+            <!-- TOP NAVIGATION WITH ONLY BACK BUTTON -->
+            <div class="top-nav-bar">
+                <a href="cybersecurity.html" class="back-btn">
+                    ← Back 
+                </a>
+            </div>
+
+            <!-- MAXIMIZED DISPLAY CARD CONTAINER -->
+            <article class="topic-card-container">
+                
+                <!-- HEADER SECTION -->
+                <div class="content-header">
+                    <span class="category-badge">
+                        <span>🛡️</span> Cyber Security • Topic 1
+                    </span>
+                    <h1 class="content-title">🎣 Phishing, Fake Links & Email/SMS Scams</h1>
+                </div>
+
+                <!-- WHAT IS IT SECTION -->
+                <section>
+                    <h2 class="section-heading">📌 What Is It?</h2>
+                    <div class="definition-box">
+                        <p><strong>Phishing</strong> is a cyber attack where fraudsters send fake messages, emails, or links while pretending to be legitimate organizations such as banks, government bodies, utility providers, or courier companies.</p>
+                        <p><strong>Primary Goal:</strong> To deceive you into sharing confidential details like passwords, ATM PINs, CVVs, or personal ID numbers.</p>
+                    </div>
+                </section>
+
+                <!-- REAL-LIFE EXAMPLES -->
+                <section>
+                    <h2 class="section-heading">📱 Real-Life Fraud Examples</h2>
+                    <div class="examples-grid">
+                        <div class="example-card">
+                            <div class="example-title">💡 Electricity Bill Disconnection</div>
+                            <div class="example-quote">
+                                "Dear Consumer, your electricity power will be disconnected at 9:30 PM tonight because your last bill was not updated. Immediately call officer at 98XXXXXXXX or pay ₹10 via this link to update."
+                            </div>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-title">🏦 Bank Account/Card Suspension</div>
+                            <div class="example-quote">
+                                "Your SBI / HDFC Bank Net Banking account has been locked due to pending PAN card verification. Click here [fake-bank-portal.xyz] to restore access within 24 hours."
+                            </div>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-title">🎁 Lottery / Reward Cashback</div>
+                            <div class="example-quote">
+                                "Congratulations! You have received a cashback reward of ₹4,999 on Google Pay / PhonePe. Tap this link to claim your reward straight to your bank account."
+                            </div>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-title">📦 Parcel / Courier Delivery Failure</div>
+                            <div class="example-quote">
+                                "Your courier package could not be delivered due to an incorrect house address. Click the link to update your details and pay a ₹5 re-delivery fee."
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- HOW DOES IT WORK -->
+                <section>
+                    <h2 class="section-heading">⚙️ How Does It Work?</h2>
+                    <div class="workflow-container">
+                        <div class="step-card">
+                            <span class="step-badge">Step 1</span>
+                            <div class="step-title">The Hook</div>
+                            <div class="step-desc">The attacker broadcasts mass emails or SMS containing a malicious link paired with an urgent or lucrative statement.</div>
+                        </div>
+
+                        <div class="step-card">
+                            <span class="step-badge">Step 2</span>
+                            <div class="step-title">The Bait</div>
+                            <div class="step-desc">Clicking the link opens a duplicate site carefully forged to look identical to your bank or provider.</div>
+                        </div>
+
+                        <div class="step-card">
+                            <span class="step-badge">Step 3</span>
+                            <div class="step-title">Data Capture</div>
+                            <div class="step-desc">You are prompted to enter credentials, bank details, card numbers, or government ID numbers.</div>
+                        </div>
+
+                        <div class="step-card">
+                            <span class="step-badge">Step 4</span>
+                            <div class="step-title">The Theft</div>
+                            <div class="step-desc">The scammer captures this data in real-time to drain funds, hijack accounts, or commit identity fraud.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SCAMMER'S TRICKS & RED FLAGS -->
+                <section class="info-grid">
+                    <div class="info-box">
+                        <div class="info-box-title threat-tag">🎭 Scammer's Tricks</div>
+                        <div class="bullet-list">
+                            <div class="bullet-item">
+                                <span class="bullet-icon">🚨</span>
+                                <span><strong>Fabricated Urgency:</strong> Creating panic (e.g., 'Power cut in 2 hours', 'Account blocked immediately') so you act without thinking.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">🚨</span>
+                                <span><strong>Visual Impersonation:</strong> Using genuine logos, official-looking fonts, and slightly altered URLs (e.g., <code class="code-link">www.onlinesbi-update.com</code> instead of <code class="code-link">www.onlinesbi.sbi</code>).</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">🚨</span>
+                                <span><strong>Appealing to Greed:</strong> Offering unexpected jackpots, instant loan approvals, or tax refunds.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-box-title warning-tag">🚩 Red Flags (Warning Signs)</div>
+                        <div class="bullet-list">
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚠️</span>
+                                <span>Messages from normal 10-digit mobile numbers instead of registered company sender IDs (e.g., AD-HDFCBK or VK-SBIINB).</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚠️</span>
+                                <span>Spelling mistakes, broken grammar, or awkward phrasing.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚠️</span>
+                                <span>Generic greetings like "Dear Customer" or "Dear User" instead of your name.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚠️</span>
+                                <span>Shortened or suspicious URLs (e.g., bit.ly, tinyurl, .xyz, .top, .apk).</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚠️</span>
+                                <span>Demands to pay small token fees (₹5 or ₹10) to update profiles or receive parcels.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PREVENTION & INCIDENT RESPONSE -->
+                <section class="info-grid">
+                    <div class="info-box">
+                        <div class="info-box-title safe-tag">🛡️ How to Stay Safe</div>
+                        <div class="bullet-list">
+                            <div class="bullet-item">
+                                <span class="bullet-icon">✅</span>
+                                <span><strong>Never Click Unsolicited Links:</strong> Avoid links sent via SMS, WhatsApp, or email from unknown senders.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">✅</span>
+                                <span><strong>Verify Directly:</strong> Open official banking apps or type verified websites directly in your browser.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">✅</span>
+                                <span><strong>Check Sender Header:</strong> Official providers use enterprise sender headers, never personal numbers.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">✅</span>
+                                <span><strong>Enable Security Features:</strong> Use spam filters on messaging apps and keep mobile OS updated.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-box-title threat-tag">🚨 What to Do If It Happens</div>
+                        <div class="bullet-list">
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚡</span>
+                                <span><strong>Block Affected Cards & Accounts:</strong> Immediately call your bank to freeze net banking and debit/credit cards.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚡</span>
+                                <span><strong>Change Credentials:</strong> Update passwords and PINs immediately using a separate secure device.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚡</span>
+                                <span><strong>Preserve Evidence:</strong> Take screenshots of the SMS, sender number, fraudulent link, and alerts.</span>
+                            </div>
+                            <div class="bullet-item">
+                                <span class="bullet-icon">⚡</span>
+                                <span><strong>Report Quickly:</strong> File a report immediately on the National Cybercrime Reporting Portal.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CONTACT & EMERGENCY NUMBERS -->
+                <section class="emergency-banner">
+                    <div class="emergency-title">
+                        <span class="pulse-icon">📞</span> CONTACT & EMERGENCY HELPLINES
+                    </div>
+                    <div class="emergency-numbers">
+                        <div class="number-pill">
+                            <span>🛡️ 1930</span>
+                            <span style="font-weight: 500; font-size: 0.8rem; opacity: 0.9;">(National Cyber Crime)</span>
+                        </div>
+                        <div class="number-pill" style="background: #0284C7; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);">
+                            <span>🚨 112</span>
+                            <span style="font-weight: 500; font-size: 0.8rem; opacity: 0.9;">(Integrated Emergency)</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SOURCE & OFFICIAL PORTALS -->
+                <footer class="sources-footer">
+                    <div><strong>Source:</strong> Indian Cybercrime Coordination Centre (I4C) / Reserve Bank of India (RBI)</div>
+                    <div class="source-links">
+                        <span>Official Portals:</span>
+                        <a href="https://cybercrime.gov.in" target="_blank" rel="noopener" class="source-link">cybercrime.gov.in (National Cyber Crime Reporting Portal)</a>
+                        <a href="https://sancharsaathi.gov.in" target="_blank" rel="noopener" class="source-link">sancharsaathi.gov.in (Chakshu Portal)</a>
+                    </div>
+                </footer>
+
+            </article>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Apply local storage theme
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applySavedTheme();
+        });
+
+        // Sync theme changes in real-time across tabs
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'safeSphereTheme' && e.newValue) {
+                document.documentElement.setAttribute('data-theme', e.newValue);
+            }
+        });
+
+        // Language Dropdown Handler
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const currentLang = document.getElementById('currentLang');
+
+        if (langBtn && langMenu) {
+            langBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                langMenu.classList.toggle('show');
+            });
+
+            const langOptions = langMenu.querySelectorAll('.lang-option');
+            langOptions.forEach(option => {
+                option.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const selectedCode = option.getAttribute('data-code');
+                    currentLang.innerText = selectedCode;
+                    langMenu.classList.remove('show');
+                });
+            });
+
+            window.addEventListener('click', (event) => {
+                if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
+                    langMenu.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

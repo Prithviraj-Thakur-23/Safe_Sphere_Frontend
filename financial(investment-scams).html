@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Scams - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --text-main: #064E3B;
+            --text-muted: #1F2937;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --text-main: #2E1065;
+            --text-muted: #581C87;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.08);
+        }
+
+        /* --- DARK MODE OVERRIDES --- */
+        [data-theme="dark"] .logo-text { color: #FFFFFF; }
+        [data-theme="dark"] .logo-img { border-color: #FFFFFF; }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAVIGATION --- */
+        header { 
+            background: var(--bg-card); 
+            padding: 0 3%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            z-index: 100; 
+            border-bottom: 1px solid var(--border-light); 
+            flex-shrink: 0;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; transition: transform 0.2s ease; cursor: pointer; }
+        .logo-container:active { transform: scale(0.97); }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; white-space: nowrap; }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 600; align-items: center; color: var(--text-muted); }
+        .nav-links li { transition: color 0.2s ease; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
+        .nav-links li:hover { color: var(--primary-blue); }
+        .quiz-btn { background: var(--primary-blue); color: #ffffff !important; padding: 0.5rem 1.2rem; border-radius: 20px; transition: all 0.2s ease; border: none; cursor: pointer; }
+        .quiz-btn:hover { background: var(--primary-blue-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--primary-light-bg); }
+
+        /* --- LANGUAGE DROPDOWN --- */
+        .lang-dropdown { position: relative; }
+        .lang-btn {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .lang-btn:hover { background: var(--primary-light-bg); border-color: var(--primary-blue); color: var(--primary-blue); }
+        .lang-btn .arrow { font-size: 0.75rem; transition: transform 0.2s ease; }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1000;
+            padding: 0.3rem 0;
+        }
+        .lang-menu.show { display: block; }
+        .lang-option {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1rem;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lang-option:hover { background: var(--primary-light-bg); color: var(--primary-blue); }
+
+        /* --- LAYOUT CONTAINER --- */
+        .layout-container { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+
+        .main-content { flex: 1; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; overflow-y: auto; height: 100%; scrollbar-width: thin; }
+
+        .call-btn {
+            background: var(--primary-light-bg);
+            color: var(--text-main) !important;
+            padding: 0.45rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+        }
+        .call-btn:hover { background: var(--primary-blue); color: #ffffff !important; border-color: var(--primary-blue); }
+
+        .topic-card-container {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .cyber-article { display: flex; flex-direction: column; gap: 2rem; }
+
+        .article-header .badge {
+            display: inline-block;
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.6rem;
+        }
+
+        .article-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.6rem;
+            line-height: 1.2;
+        }
+
+        .article-header .lead-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .content-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-blue);
+        }
+
+        .content-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-accent);
+        }
+
+        .content-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Numbered Steps Styling */
+        .steps-container { display: flex; flex-direction: column; gap: 1rem; }
+        .step-item {
+            background: var(--bg-main);
+            border-left: 4px solid var(--primary-blue);
+            padding: 1rem 1.2rem;
+            border-radius: 0 10px 10px 0;
+            border-top: 1px solid var(--border-light);
+            border-right: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .step-title { font-weight: 700; color: var(--text-main); font-size: 0.98rem; display: block; margin-bottom: 0.3rem; }
+        .step-item p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Warning Lists */
+        .warning-list {
+            list-style-type: disc;
+            padding-left: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .warning-list li {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Scammer Tricks Grid */
+        .tricks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+        .trick-item {
+            background: var(--primary-light-bg);
+            border: 1px solid var(--border-light);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Emergency Grid */
+        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+        .emergency-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.2rem;
+            border-top: 4px solid var(--accent-red);
+        }
+        .emergency-card h3 { font-size: 1rem; font-weight: 700; color: var(--accent-red); margin-bottom: 0.4rem; }
+        .emergency-card p { font-size: 0.88rem; color: var(--text-muted); }
+
+        .sources-footer { font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-light); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .sources-footer a { color: var(--primary-blue); font-weight: 600; text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; }
+            .layout-container { flex-direction: column; height: auto; }
+            header { padding: 1rem 4%; flex-wrap: wrap; }
+            .main-content { padding: 1.2rem 4%; height: auto; }
+            .topic-card-container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="window.location.href='financial-safety.html'">
+                <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img">
+                <span class="logo-text">SafeSphere</span>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="financial-safety.html">Home</a></li>
+            <li class="lang-dropdown">
+                <button class="lang-btn" id="langBtn">
+                    🌐 <span id="currentLang">ENG</span> <span class="arrow">▼</span>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <button class="lang-option" data-code="EN">English</button>
+                    <button class="lang-option" data-code="HI">Hindi (हिंदी)</button>
+                    <button class="lang-option" data-code="MR">Marathi (मराठी)</button>
+                </div>
+            </li>
+            <li><button class="quiz-btn">Take Quiz</button></li>
+        </ul>
+    </header>
+
+    <!-- LAYOUT CONTAINER -->
+    <main class="layout-container">
+        <main class="main-content">
+            <div>
+                <a href="financial.html" class="call-btn">
+                    ← Back 
+                </a>
+            </div>
+
+            <article class="topic-card-container">
+                <div class="cyber-article">
+                    
+                    <!-- Article Header -->
+                    <div class="article-header">
+                        <span class="badge">Financial Safety Advisory</span>
+                        <h1>Investment Scams</h1>
+                        <p class="lead-text">
+                            Deceptive fraudulent schemes designed to lure individuals into depositing money into fake investment opportunities, unverified trading applications, or misleading advisory plans.
+                        </p>
+                    </div>
+
+                    <!-- Real-Life Example -->
+                    <h2 class="section-title">Real-Life Scenario</h2>
+                    <div class="content-card">
+                        <h3>The Social Media Trading Group & Fake Profit Trap</h3>
+                        <p>A person joins an online group on messaging platforms like WhatsApp or Telegram promising exceptionally high returns. A fraudulent trading app initially displays fake profits to build credibility, but when the victim attempts to withdraw their funds, withdrawals are blocked or extra fees are demanded.</p>
+                    </div>
+
+                    <!-- What Is It & How Does It Work -->
+                    <h2 class="section-title">Understanding the Threat</h2>
+                    <div class="grid-2">
+                        <div class="content-card">
+                            <h3>What Is It?</h3>
+                            <p>Fraudulent schemes that manipulate individuals into investing funds through fabricated market opportunities, third-party APK apps, or false advisory guidance.</p>
+                        </div>
+                        <div class="content-card">
+                            <h3>How It Works</h3>
+                            <p>Scammers deliberately build trust, showcase fake profit screenshots or fabricated testimonials, encourage larger capital investments, and ultimately lock users out of their accounts.</p>
+                        </div>
+                    </div>
+
+                    <!-- Scammer's Trick -->
+                    <h2 class="section-title">Common Scammer Disguises & Tactics</h2>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Fraudsters entice target investors using manufactured lures:</p>
+                    <div class="tricks-grid">
+                        <div class="trick-item">📈 Guaranteed / High Returns</div>
+                        <div class="trick-item">👤 Fake Financial Experts</div>
+                        <div class="trick-item">🖼️ Fabricated Profit Screenshots</div>
+                        <div class="trick-item">⚡ Pressure to Invest Quickly</div>
+                    </div>
+                    <div class="content-card" style="margin-top: 0.8rem; border-left: 4px solid var(--accent-red);">
+                        <h3>The Core Deception</h3>
+                        <p>Scammers often permit small initial withdrawals to manufacture false credibility, tricking targets into depositing substantial sums before freezing access.</p>
+                    </div>
+
+                    <!-- Red Flags -->
+                    <h2 class="section-title">Red Flags (Clear Warning Signs)</h2>
+                    <div class="content-card">
+                        <ul class="warning-list">
+                            <li>Promises of guaranteed, risk-free, or unrealistically high investment returns.</li>
+                            <li>Unsolicited investment tips or group invites on social media and chat apps.</li>
+                            <li>Prompts to download unknown trading applications via third-party APK links.</li>
+                            <li>Instructions to transfer funds into unrelated personal or corporate bank accounts.</li>
+                            <li>Sudden demands for withdrawal fees or taxes before releasing profits.</li>
+                        </ul>
+                    </div>
+
+                    <!-- How to Stay Safe -->
+                    <h2 class="section-title">How to Stay Safe</h2>
+                    <div class="steps-container">
+                        <div class="step-item">
+                            <span class="step-title">Verify via Regulators (SEBI)</span>
+                            <p>Always verify investment platforms, brokers, and market intermediaries through SEBI or official financial regulatory registers.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-title">Ignore Unsolicited Social Media Tips</span>
+                            <p>Never trust unverified investment advice from social media groups, and avoid unrealistic return promises.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-title">Avoid Third-Party APKs</span>
+                            <p>Never download investment or trading applications via unverified third-party APK links or unknown sources.</p>
+                        </div>
+                    </div>
+
+                    <!-- What to Do If It Happens -->
+                    <h2 class="section-title">Emergency Action Steps</h2>
+                    <div class="emergency-grid">
+                        <div class="emergency-card">
+                            <h3>1. Stop Sending Money Immediately</h3>
+                            <p>Instantly halt all communications and payments. Preserve complete transaction records, screenshots, and chat logs.</p>
+                        </div>
+                        <div class="emergency-card">
+                            <h3>2. Contact Bank & Report Portal</h3>
+                            <p>Contact your bank immediately to block further transfers. Report the fraud online at <a href="https://www.cybercrime.gov.in/" target="_blank">cybercrime.gov.in</a> or call <strong>1930</strong>.</p>
+                        </div>
+                        <div class="emergency-card">
+                            <h3>3. File SEBI SCORES Complaint</h3>
+                            <p>For securities-market grievances, utilize SEBI's official grievance redressal mechanism via the <a href="https://scores.gov.in/" target="_blank">SCORES portal</a>.</p>
+                        </div>
+                    </div>
+
+                    <!-- Official Sources Footer -->
+                    <div class="sources-footer">
+                        <strong>Official Sources & Regulatory Guidelines:</strong>
+                        <ul>
+                            <li><strong>Regulatory Body:</strong> Securities and Exchange Board of India (SEBI) - <a href="https://www.sebi.gov.in/" target="_blank">https://www.sebi.gov.in/</a></li>
+                            <li><strong>SEBI Grievance Redressal (SCORES):</strong> <a href="https://scores.gov.in/" target="_blank">https://scores.gov.in/</a></li>
+                            <li><strong>National Cyber Crime Reporting Portal:</strong> <a href="https://www.cybercrime.gov.in/" target="_blank">https://www.cybercrime.gov.in/</a></li>
+                            <li><strong>Cyber Crime Helpline:</strong> Call <strong>1930</strong>.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </article>
+        </main>
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const currentLang = document.getElementById('currentLang');
+
+        if (langBtn && langMenu) {
+            langBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                langMenu.classList.toggle('show');
+            });
+
+            const langOptions = langMenu.querySelectorAll('.lang-option');
+            langOptions.forEach(option => {
+                option.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    currentLang.innerText = option.getAttribute('data-code');
+                    langMenu.classList.remove('show');
+                });
+            });
+
+            window.addEventListener('click', (event) => {
+                if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
+                    langMenu.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity Theft: Recognizing & Responding - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --text-main: #064E3B;
+            --text-muted: #1F2937;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --text-main: #2E1065;
+            --text-muted: #581C87;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.08);
+        }
+
+        /* --- DARK MODE OVERRIDES --- */
+        [data-theme="dark"] .logo-text { color: #FFFFFF; }
+        [data-theme="dark"] .logo-img { border-color: #FFFFFF; }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAVIGATION --- */
+        header { 
+            background: var(--bg-card); 
+            padding: 0 3%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            z-index: 100; 
+            border-bottom: 1px solid var(--border-light); 
+            flex-shrink: 0;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; transition: transform 0.2s ease; cursor: pointer; }
+        .logo-container:active { transform: scale(0.97); }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; white-space: nowrap; }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 600; align-items: center; color: var(--text-muted); }
+        .nav-links li { transition: color 0.2s ease; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
+        .nav-links li:hover { color: var(--primary-blue); }
+        .quiz-btn { background: var(--primary-blue); color: #ffffff !important; padding: 0.5rem 1.2rem; border-radius: 20px; transition: all 0.2s ease; border: none; cursor: pointer; }
+        .quiz-btn:hover { background: var(--primary-blue-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--primary-light-bg); }
+
+        /* --- LANGUAGE DROPDOWN --- */
+        .lang-dropdown { position: relative; }
+        .lang-btn {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .lang-btn:hover { background: var(--primary-light-bg); border-color: var(--primary-blue); color: var(--primary-blue); }
+        .lang-btn .arrow { font-size: 0.75rem; transition: transform 0.2s ease; }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1000;
+            padding: 0.3rem 0;
+        }
+        .lang-menu.show { display: block; }
+        .lang-option {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1rem;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lang-option:hover { background: var(--primary-light-bg); color: var(--primary-blue); }
+
+        /* --- LAYOUT CONTAINER --- */
+        .layout-container { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+
+        .main-content { flex: 1; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; overflow-y: auto; height: 100%; scrollbar-width: thin; }
+
+        .call-btn {
+            background: var(--primary-light-bg);
+            color: var(--text-main) !important;
+            padding: 0.45rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+        }
+        .call-btn:hover { background: var(--primary-blue); color: #ffffff !important; border-color: var(--primary-blue); }
+
+        .topic-card-container {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .cyber-article { display: flex; flex-direction: column; gap: 2rem; }
+
+        .article-header .badge {
+            display: inline-block;
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.6rem;
+        }
+
+        .article-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.6rem;
+            line-height: 1.2;
+        }
+
+        .article-header .lead-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .content-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-blue);
+        }
+
+        .content-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-accent);
+        }
+
+        .content-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Red Flags Table */
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            background: var(--bg-main);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.85rem 1.1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        th {
+            background: var(--primary-light-bg);
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        td {
+            color: var(--text-muted);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Steps & Highlights */
+        .steps-container { display: flex; flex-direction: column; gap: 1rem; }
+        .step-item {
+            background: var(--bg-main);
+            border-left: 4px solid var(--primary-blue);
+            padding: 1rem 1.2rem;
+            border-radius: 0 10px 10px 0;
+            border-top: 1px solid var(--border-light);
+            border-right: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .step-title { font-weight: 700; color: var(--text-main); font-size: 0.98rem; display: block; margin-bottom: 0.3rem; }
+        .step-item p { font-size: 0.9rem; color: var(--text-muted); }
+
+        .highlight-box {
+            background: var(--primary-light-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .highlight-box h3 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+        .highlight-box ul { list-style-type: disc; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .highlight-box li { font-size: 0.92rem; color: var(--text-main); }
+
+        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+        .emergency-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.2rem;
+            border-top: 4px solid var(--accent-red);
+        }
+        .emergency-card h3 { font-size: 1rem; font-weight: 700; color: var(--accent-red); margin-bottom: 0.4rem; }
+        .emergency-card p { font-size: 0.88rem; color: var(--text-muted); }
+
+        .sources-footer { font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-light); padding-top: 1rem; }
+        .sources-footer ul { list-style-type: disc; padding-left: 1.2rem; margin-top: 0.4rem; }
+
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; }
+            .layout-container { flex-direction: column; height: auto; }
+            header { padding: 1rem 4%; flex-wrap: wrap; }
+            .main-content { padding: 1.2rem 4%; height: auto; }
+            .topic-card-container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="window.location.href='cybersecurity.html'">
+                <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img">
+                <span class="logo-text">SafeSphere</span>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="cybersecurity.html">Home</a></li>
+            <li class="lang-dropdown">
+                <button class="lang-btn" id="langBtn">
+                    🌐 <span id="currentLang">ENG</span> <span class="arrow">▼</span>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <button class="lang-option" data-code="EN">English</button>
+                    <button class="lang-option" data-code="HI">Hindi (हिंदी)</button>
+                    <button class="lang-option" data-code="MR">Marathi (मराठी)</button>
+                </div>
+            </li>
+            <li><button class="quiz-btn">Take Quiz</button></li>
+        </ul>
+    </header>
+
+    <!-- LAYOUT CONTAINER -->
+    <main class="layout-container">
+        <div class="main-content">
+            <div>
+                <a href="cybersecurity.html" class="call-btn">
+                    ← Back 
+                </a>
+            </div>
+
+            <article class="topic-card-container">
+                <div class="cyber-article">
+                    
+                    <!-- Article Header -->
+                    <div class="article-header">
+                        <span class="badge">SafeSphere Threat Advisory</span>
+                        <h1>Identity Theft: Recognizing & Responding</h1>
+                        <p class="lead-text">
+                            Identity theft occurs when malicious actors steal your sensitive personal credentials to commit fraud, secure unauthorized loans, or execute crimes in your name, resulting in lasting financial and legal distress.
+                        </p>
+                    </div>
+
+                    <!-- What Is It Section -->
+                    <h2 class="section-title"> What Is It?</h2>
+                    <div class="grid-2">
+                        <div class="content-card">
+                            <h3>Definition</h3>
+                            <p>Unauthorized collection and exploitation of your name, national ID numbers, banking digits, or credit information for fraudulent activities.</p>
+                        </div>
+                        <div class="content-card">
+                            <h3>Impact</h3>
+                            <p>Leads to severe financial loss, long-term credit damage, ruined credit scores, and complex legal complications.</p>
+                        </div>
+                    </div>
+
+                    <!-- Real-Life Example -->
+                    <h2 class="section-title"> Real-Life Example</h2>
+                    <div class="content-card" style="grid-column: 1 / -1;">
+                        <h3>Texas Credit Fraud Case (2025)</h3>
+                        <p>A victim discovered her identity was compromised after receiving unexpected debt collection calls for credit accounts she never opened. A credit report audit revealed three fraudulent accounts and unauthorized mail forwarding.</p>
+                    </div>
+
+                    <!-- How Does It Work Section -->
+                    <h2 class="section-title"> How Does It Work?</h2>
+                    <div class="grid-2">
+                        <div class="content-card">
+                            <h3>Data Acquisition Vectors</h3>
+                            <p>Phishing campaigns, physical wallet/mail theft, corporate data breaches, phone/SMS impersonation, and ATM skimming devices.</p>
+                        </div>
+                        <div class="content-card">
+                            <h3>Exploitation Stage</h3>
+                            <p>Once captured, attackers open lines of credit, make unauthorized purchases, file fraudulent tax returns, or commit crimes under your name.</p>
+                        </div>
+                    </div>
+
+                    <!-- Scammer's Tricks -->
+                    <h2 class="section-title"> Scammer's Tricks & Manipulation</h2>
+                    <div class="highlight-box">
+                        <h3>⚠️ Common Psychological Tactics</h3>
+                        <ul>
+                            <li><strong>Authority Impersonation:</strong> Posing as bank officers, tax agency representatives, or tech support staff.</li>
+                            <li><strong>Creating Panic:</strong> Using urgent threats like <em>“Your account will be closed immediately!”</em></li>
+                            <li><strong>Emotional Coercion:</strong> Employing high-pressure scenarios such as <em>“Your family is in active danger!”</em></li>
+                            <li><strong>Verification Traps:</strong> Asking you to confirm personal details or transfer money into a "secure" account.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Red Flags Table -->
+                    <h2 class="section-title"> Red Flags (Clear Warning Signs)</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Warning Sign Category</th>
+                                    <th>Specific Indicators to Watch For</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Financial Statements</strong></td>
+                                    <td>Bills for unrequested accounts, unfamiliar bank charges, or unknown loans.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Credit Reports</strong></td>
+                                    <td>Unexpected collection calls or errors and unknown lines of credit on your report.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mail & Communication</strong></td>
+                                    <td>Mail stops arriving entirely (address-redirect fraud) or unexpected login/password reset alerts.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Government & Services</strong></td>
+                                    <td>Tax notices for pre-filed returns in your name or medical bills for unreceived services.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- How to Stay Safe -->
+                    <h2 class="section-title"> How to Stay Safe</h2>
+                    <div class="steps-container">
+                        <div class="step-item">
+                            <span class="step-title">Monitor Accounts Monthly</span>
+                            <p>Regularly review your bank accounts, credit card activity, and comprehensive credit bureau reports.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-title">Enforce Strong Security Controls</span>
+                            <p>Utilize robust, unique passwords paired with two-factor authentication (2FA) across all sensitive online accounts.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-title">Shred Physical Records</span>
+                            <p>Securely destroy old financial statements, pre-approved credit offers, or documents containing personal information.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-title">Freeze Your Credit</span>
+                            <p>Place security freezes on your credit files to prevent new accounts from being opened without your direct authorization.</p>
+                        </div>
+                    </div>
+
+                    <!-- What to Do If It Happens -->
+                    <h2 class="section-title"> What to Do If It Happens</h2>
+                    <div class="emergency-grid">
+                        <div class="emergency-card">
+                            <h3>1. Contact Financial Institutions</h3>
+                            <p>Immediately freeze or close compromised bank accounts and credit cards.</p>
+                        </div>
+                        <div class="emergency-card">
+                            <h3>2. Place Fraud Alerts</h3>
+                            <p>Contact major credit bureaus (Equifax, Experian, TransUnion) to activate active fraud alerts.</p>
+                        </div>
+                        <div class="emergency-card">
+                            <h3>3. Report & Document</h3>
+                            <p>File reports with official authorities (e.g., IdentityTheft.gov, FTC, or local police) and log all communication records.</p>
+                        </div>
+                    </div>
+
+                    <!-- Sources Footer -->
+                    <div class="sources-footer">
+                        <strong>References & Sources:</strong>
+                        <ul>
+                            <li>U.S. Federal Trade Commission (FTC) – Red Flags Rule & IdentityTheft.gov</li>
+                            <li>USAGov & U.S. Department of Homeland Security Identity Theft Guidance</li>
+                            <li>Consumer Financial Protection Bureau & Scamwatch (Australia)</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const currentLang = document.getElementById('currentLang');
+
+        if (langBtn && langMenu) {
+            langBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                langMenu.classList.toggle('show');
+            });
+
+            const langOptions = langMenu.querySelectorAll('.lang-option');
+            langOptions.forEach(option => {
+                option.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    currentLang.innerText = option.getAttribute('data-code');
+                    langMenu.classList.remove('show');
+                });
+            });
+
+            window.addEventListener('click', (event) => {
+                if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
+                    langMenu.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire & Building Emergency Safety - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME PALETTES --- */
+        
+        /* Dark Theme (Default) */
+        :root, [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --bg-inner-card: #0F172A;
+            --primary-rose: #F43F5E;
+            --primary-rose-hover: #E11D48;
+            --primary-light-bg: rgba(244, 63, 94, 0.12);
+            --accent-red: #EF4444;
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --border-light: #334155;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --bg-main: #FFF1F2;
+            --bg-card: #FFFFFF;
+            --bg-inner-card: #FFF5F5;
+            --primary-rose: #E11D48;
+            --primary-rose-hover: #BE123C;
+            --primary-light-bg: #FFE4E6;
+            --accent-red: #DC2626;
+            --text-main: #881337;
+            --text-muted: #4C0519;
+            --border-light: #FECDD3;
+            --shadow: 0 4px 15px rgba(225, 29, 72, 0.08);
+        }
+
+        /* Emerald Theme */
+        [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --bg-inner-card: #F0FDF4;
+            --primary-rose: #059669;
+            --primary-rose-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --text-main: #064E3B;
+            --text-muted: #1F2937;
+            --border-light: #A7F3D0;
+            --shadow: 0 4px 15px rgba(5, 150, 105, 0.08);
+        }
+
+        /* Purple Theme */
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --bg-inner-card: #F3E8FF;
+            --primary-rose: #7C3AED;
+            --primary-rose-hover: #6D28D9;
+            --primary-light-bg: #E9D5FF;
+            --accent-red: #E11D48;
+            --text-main: #2E1065;
+            --text-muted: #581C87;
+            --border-light: #DDD6FE;
+            --shadow: 0 4px 15px rgba(124, 58, 237, 0.08);
+        }
+
+        /* --- BASE RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 3%;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+
+        /* --- TOP BACK NAVIGATION --- */
+        .top-nav {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: var(--bg-card);
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 0.65rem 1.3rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            border: 1px solid var(--border-light);
+            transition: all 0.25s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-rose);
+            color: #FFFFFF;
+            border-color: var(--primary-rose);
+            transform: translateX(-4px);
+        }
+
+        .back-btn .arrow {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .main-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 3rem 3.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 2.8rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* --- HEADER SECTION --- */
+        .header-section {
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 1.8rem;
+        }
+
+        .meta-badges {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: var(--primary-light-bg);
+            color: var(--primary-rose);
+            font-weight: 800;
+            font-size: 0.82rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .main-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.25;
+        }
+
+        /* --- REAL-LIFE SCENARIO BOX --- */
+        .scenario-box {
+            background: var(--primary-light-bg);
+            border: 1px solid var(--primary-rose);
+            border-left: 6px solid var(--primary-rose);
+            border-radius: 16px;
+            padding: 1.6rem 2rem;
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+        }
+
+        .scenario-icon {
+            font-size: 2rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .scenario-content h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary-rose);
+            margin-bottom: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .scenario-content ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .scenario-content li {
+            font-size: 1.02rem;
+            color: var(--text-main);
+            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .scenario-content li::before {
+            content: "•";
+            color: var(--primary-rose);
+            font-weight: 800;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* --- TWO COLUMN GRIDS --- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--bg-inner-card);
+            border: 1px solid var(--border-light);
+            border-radius: 18px;
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            height: 100%;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .info-card p, .info-card ul {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.65;
+        }
+
+        .info-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-card li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .info-card li::before {
+            content: "•";
+            color: var(--primary-rose);
+            font-weight: bold;
+        }
+
+        /* --- WARNING & TRICKS CARDS --- */
+        .warning-card {
+            background: var(--bg-inner-card);
+            border: 1px solid var(--border-light);
+            border-top: 4px solid var(--accent-red);
+            border-radius: 18px;
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .warning-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .warning-card li {
+            color: var(--text-muted);
+            font-size: 0.96rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            line-height: 1.5;
+        }
+
+        .warning-card li::before {
+            content: "⚠️";
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+        }
+
+        /* --- SECTION TITLES --- */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        /* --- FLEXIBLE CARDS GRID --- */
+        .grid-auto {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .step-card {
+            background: var(--bg-inner-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            height: 100%;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-rose);
+        }
+
+        .step-badge {
+            background: var(--primary-rose);
+            color: #FFFFFF;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .step-card p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        /* --- EMERGENCY ACTION BANNER --- */
+        .emergency-banner {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--accent-red);
+            border-radius: 18px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .emergency-info {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .emergency-icon {
+            font-size: 2.2rem;
+        }
+
+        .emergency-text h4 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .emergency-text p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .helpline-numbers {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .phone-btn {
+            background: var(--accent-red);
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 0.65rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .phone-btn:hover {
+            background: #DC2626;
+            transform: scale(1.04);
+        }
+
+        /* --- FOOTER SOURCE BADGE --- */
+        .source-footer {
+            border-top: 1px solid var(--border-light);
+            padding-top: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .source-tag {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* --- RESPONSIVE BREAKPOINTS --- */
+        @media (max-width: 1100px) {
+            .grid-auto { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1.2rem 2%; }
+            .main-container { padding: 1.8rem 1.5rem; border-radius: 18px; gap: 2rem; }
+            .main-title { font-size: 1.75rem; }
+            .grid-2, .grid-auto { grid-template-columns: 1fr; }
+            .emergency-banner { flex-direction: column; align-items: flex-start; }
+            .helpline-numbers { flex-wrap: wrap; width: 100%; }
+            .phone-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BACK NAVIGATION (Links directly to personal.html) -->
+    <div class="top-nav">
+        <a href="personal.html" class="back-btn">
+            <span class="arrow">←</span> Back to Personal Safety
+        </a>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="main-container">
+
+        <!-- HEADER AREA -->
+        <header class="header-section">
+            <div class="meta-badges">
+                <span class="badge">Personal Safety</span>
+            </div>
+            <h1 class="main-title">Fire & Building Emergency Safety</h1>
+        </header>
+
+        <!-- REAL-LIFE EXAMPLE CALLOUT -->
+        <section class="scenario-box">
+            <div class="scenario-icon">🔥</div>
+            <div class="scenario-content">
+                <h3>Real-Life Example & Core Actions</h3>
+                <ul>
+                    <li>If a fire alarm sounds and smoke is visible, do not use the lift.</li>
+                    <li>Use the nearest safe marked exit and take the stairs.</li>
+                    <li>Gather at the designated assembly point outside the building.</li>
+                    <li>Do not return inside until authorities confirm that the building is safe.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- WHAT IS IT & HOW DOES IT WORK -->
+        <section class="grid-2">
+            <div class="info-card">
+                <div class="card-header">
+                    <span>🔍</span> What Is It?
+                </div>
+                <ul>
+                    <li>It covers actions during fires, smoke, gas leaks, and other situations requiring quick evacuation.</li>
+                    <li>The main aim is to protect life, raise the alarm, and leave through safe routes.</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <span>⚙️</span> How Does It Work?
+                </div>
+                <ul>
+                    <li>Safety systems include alarms, smoke detectors, extinguishers, emergency lighting, and marked exits.</li>
+                    <li>Follow the evacuation plan and do not waste time collecting belongings.</li>
+                    <li>Keep exits clear so emergency responders can work quickly.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SCAMMER'S TRICK & RED FLAGS -->
+        <section class="grid-2">
+            <div class="warning-card">
+                <div class="card-header">
+                    <span>🎭</span> Scammer's Trick
+                </div>
+                <ul>
+                    <li>Pretending to be a building inspector, maintenance worker, or emergency official.</li>
+                    <li>Requesting money for fake repairs or using fake emergency messages to collect personal information.</li>
+                </ul>
+            </div>
+
+            <div class="warning-card">
+                <div class="card-header">
+                    <span>🚩</span> Red Flags (Clear Warning Signs)
+                </div>
+                <ul>
+                    <li>Smoke, burning smell, visible flames, or repeated alarm sounds.</li>
+                    <li>Damaged electrical equipment, sparks, or unusually hot door handles.</li>
+                    <li>Blocked escape routes or unverified individuals demanding money during an incident.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- HOW TO STAY SAFE SECTION -->
+        <section>
+            <h2 class="section-title"><span>🛡️</span> How to Stay Safe</h2>
+            <div class="grid-auto">
+                <div class="step-card">
+                    <div class="step-badge">1</div>
+                    <h4>Know Exits Early</h4>
+                    <p>Identify the main and alternate escape exits in every building you frequently visit or use.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-badge">2</div>
+                    <h4>Never Use Lifts</h4>
+                    <p>Always take the stairs during a fire evacuation. Lifts can lose power or fill with dangerous smoke.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-badge">3</div>
+                    <h4>Follow Staff Guidance</h4>
+                    <p>Listen closely to safety wardens, venue staff, and emergency personnel during an evacuation.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-badge">4</div>
+                    <h4>Wait for Official Clearance</h4>
+                    <p>Do not re-enter the building for any reason until official authorities state that it is safe.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHAT TO DO IF IT HAPPENS SECTION -->
+        <section>
+            <h2 class="section-title"><span>🚨</span> What to Do If It Happens</h2>
+            <div class="grid-auto">
+                <div class="step-card">
+                    <div class="step-badge">1</div>
+                    <h4>Raise Alarm & Evacuate</h4>
+                    <p>Trigger the nearest manual fire alarm and evacuate immediately using the safest available exit route.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-badge">2</div>
+                    <h4>Call Emergency Services</h4>
+                    <p>Call emergency responders from a safe location and provide precise location details and building information.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-badge">3</div>
+                    <h4>Gather at Assembly Point</h4>
+                    <p>Head directly to the designated assembly point so safety wardens can account for everyone.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-badge">4</div>
+                    <h4>Stop, Drop, and Roll</h4>
+                    <p>If clothing catches fire: Stop immediately, Drop to the ground, cover your face, and Roll until flames are out.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EMERGENCY ACTION BANNER -->
+        <div class="emergency-banner">
+            <div class="emergency-info">
+                <span class="emergency-icon">📞</span>
+                <div class="emergency-text">
+                    <h4>Building Emergency or Fire Outbreak?</h4>
+                    <p>Contact fire and integrated emergency services immediately for help.</p>
+                </div>
+            </div>
+            <div class="helpline-numbers">
+                <a href="tel:101" class="phone-btn">📞 101 – Fire Brigade</a>
+                <a href="tel:112" class="phone-btn">📞 112 – Integrated Emergency</a>
+                <a href="tel:108" class="phone-btn">📞 108 – Ambulance</a>
+            </div>
+        </div>
+
+        <!-- FOOTER CREDITS & SOURCE -->
+        <footer class="source-footer">
+            <div>
+                Source: <span class="source-tag">National Fire Protection Association (NFPA) | Ready.gov Fire Guidance | Local Fire and Emergency Services</span>
+            </div>
+            <div>
+                SafeSphere Personal Safety Initiative
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- REAL-TIME THEME SYNCHRONIZATION SCRIPT -->
+    <script>
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'safeSphereTheme' || e.key === 'theme') {
+                if (e.newValue) {
+                    document.documentElement.setAttribute('data-theme', e.newValue);
+                }
+            }
+        });
+
+        window.addEventListener('focus', () => {
+            const currentTheme = localStorage.getItem('safeSphereTheme') || localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        });
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

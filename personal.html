@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Safety Manual - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --text-main: #064E3B;
+            --text-muted: #1F2937;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --text-main: #2E1065;
+            --text-muted: #581C87;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.08);
+        }
+
+        /* --- DARK MODE OVERRIDES --- */
+        [data-theme="dark"] .logo-text { color: #FFFFFF; }
+        [data-theme="dark"] .logo-img { border-color: #FFFFFF; }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAVIGATION --- */
+        header { 
+            background: var(--bg-card); 
+            padding: 0 3%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky;
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid var(--border-light); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; transition: transform 0.2s ease; cursor: pointer; }
+        .logo-container:active { transform: scale(0.97); }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; white-space: nowrap; }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 600; align-items: center; color: var(--text-muted); }
+        .nav-links li { transition: color 0.2s ease; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
+        .nav-links li:hover { color: var(--primary-blue); }
+        .quiz-btn { background: var(--primary-blue); color: #ffffff !important; padding: 0.5rem 1.2rem; border-radius: 20px; transition: all 0.2s ease; border: none; font-weight: 700; cursor: pointer; }
+        .quiz-btn:hover { background: var(--primary-blue-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--primary-light-bg); }
+
+        /* --- LANGUAGE DROPDOWN --- */
+        .lang-dropdown { position: relative; }
+        .lang-btn {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .lang-btn:hover { background: var(--primary-light-bg); border-color: var(--primary-blue); color: var(--primary-blue); }
+        .lang-btn .arrow { font-size: 0.75rem; transition: transform 0.2s ease; }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1000;
+            overflow: hidden;
+            padding: 0.3rem 0;
+        }
+        .lang-menu.show { display: block; }
+        .lang-option {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1rem;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lang-option:hover { background: var(--primary-light-bg); color: var(--primary-blue); }
+
+        /* --- TOPIC SEARCH DROPDOWN BAR --- */
+        .topic-bar-container {
+            width: 100%;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.75rem 3%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: var(--header-height);
+            z-index: 900;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .topic-search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            align-items: center;
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 0.2rem 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-search-wrapper:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px var(--primary-light-bg);
+        }
+
+        .topic-search-wrapper .search-icon {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-right: 0.6rem;
+        }
+
+        .topic-dropdown-select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.55rem 0;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .topic-dropdown-select option {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            padding: 0.5rem;
+        }
+
+        .topic-search-wrapper .dropdown-arrow {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            margin-left: 0.5rem;
+        }
+
+        /* --- LAYOUT CONTAINER & MAIN CONTENT --- */
+        .main-content { 
+            flex: 1; 
+            padding: 2rem 3%; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1.5rem; 
+            max-width: 1480px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: var(--primary-light-bg);
+            color: var(--text-main) !important;
+            padding: 0.45rem 1.1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            width: fit-content;
+        }
+        .back-btn:hover { background: var(--border-light); transform: translateX(-3px); }
+
+        /* --- EXPANDED BACKGROUND BOX --- */
+        .topic-card-container {
+            background: var(--bg-card);
+            padding: 3rem 3.5rem;
+            border-radius: 24px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            width: 100%;
+        }
+
+        /* --- MAIN CONTENT TYPOGRAPHY --- */
+        .main-header-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.2;
+            margin-bottom: 0.4rem;
+        }
+
+        .main-header-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 900px;
+        }
+
+        /* --- TOPIC SUBSECTION STYLING --- */
+        .topic-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-light);
+            scroll-margin-top: 140px;
+        }
+
+        .topic-section:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .section-header-badge {
+            display: inline-block;
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            width: fit-content;
+        }
+
+        .section-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            margin-top: -0.3rem;
+        }
+
+        /* --- BOXES IN THE SAME LINE (GRID SYSTEM) --- */
+        .threat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .threat-grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .threat-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            padding: 1.4rem;
+            border-radius: 16px;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .threat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .threat-card .icon-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.6rem;
+        }
+
+        .threat-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        /* --- ACTION BOXES IN THE SAME LINE --- */
+        .action-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .action-list-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.8rem;
+            background: var(--bg-main);
+            padding: 1.3rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            border-top: 4px solid var(--primary-blue);
+            height: 100%;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .action-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .action-number {
+            background: var(--primary-blue);
+            color: #FFFFFF;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .action-text strong {
+            display: block;
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .action-text p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* EMERGENCY ALERT BANNER */
+        .alert-box {
+            background: rgba(220, 38, 38, 0.08);
+            border: 1px solid var(--accent-red);
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .alert-box .alert-icon { font-size: 1.6rem; }
+        .alert-box p { font-size: 0.95rem; color: var(--text-main); margin: 0; font-weight: 600; }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 1200px) {
+            .threat-grid, .action-list { grid-template-columns: repeat(2, 1fr); }
+            .threat-grid-3, .action-list-3 { grid-template-columns: repeat(2, 1fr); }
+            .topic-card-container { padding: 2.2rem; }
+        }
+
+        @media (max-width: 768px) {
+            body { overflow-y: auto; }
+            header { padding: 1rem 4%; flex-wrap: wrap; }
+            .main-content { padding: 1.2rem 3%; }
+            .topic-card-container { padding: 1.5rem; border-radius: 16px; }
+            .threat-grid, .action-list, .threat-grid-3, .action-list-3 { grid-template-columns: 1fr; }
+            .main-header-title { font-size: 1.6rem; }
+            .section-title { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="window.location.href='index.html'">
+                <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img">
+                <span class="logo-text">SafeSphere</span>
+            </div>
+        </div>
+
+        
+    </header>
+
+    <!-- TOPIC FILE NAV BAR -->
+    <div class="topic-bar-container">
+        <div class="topic-search-wrapper">
+            <span class="search-icon">🔍</span>
+            <select id="personalSafetyTopicSelector" class="topic-dropdown-select" onchange="navigateToPage(this)">
+                <option value="" data-url="full-manual.html">All Personal Safety Topics (Full Manual)</option>
+                
+                <option value="" data-url="personal(feeling).html"> Feeling Threatened or Followed</option>
+                <option value="" data-url="personal(transport).html"> Public & Shared Transport Safety</option>
+                <option value="" data-url="personal(walking).html"> Walking & Travelling Alone / Night Safety</option>
+                <option value="" data-url="personal(crowd).html"> Crowd & Public Event Safety</option>
+                <option value="" data-url="personal(fire).html"> Fire & Building Emergency Safety</option>
+                <option value="" data-url="personal(accident).html"> Accident & Sudden Emergency Response</option>
+            </select>
+            <span class="dropdown-arrow">▼</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+        <div>
+            <a href="index.html" class="back-btn">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+        <!-- EXPANDED MAIN BACKGROUND CARD CONTAINING ALL TOPICS -->
+        <article class="topic-card-container">
+            
+            <!-- MAIN TITLE -->
+            <div>
+                <h1 class="main-header-title">Personal Safety & Emergency Response Guide</h1>
+                <p class="main-header-subtitle">Comprehensive protocols, preventive strategies, and quick action steps for physical safety in public and emergency environments.</p>
+            </div>
+
+            <!-- SECTION 1: OVERVIEW & CORE PRINCIPLES -->
+            <section class="topic-section" id="section-overview">
+                <div>
+                    <span class="section-header-badge">01. Foundation</span>
+                    <h2 class="section-title">Core Pillars of Personal Safety</h2>
+                    <p class="section-subtitle">Key proactive behaviors to recognize vulnerabilities early and prevent safety risks.</p>
+                </div>
+
+                <div class="threat-grid">
+                    <div class="threat-card">
+                        <div class="icon-title"><span>👀</span> Situational Awareness</div>
+                        <p>Stay aware of your surroundings by minimizing distractions like looking at phones or using noise-canceling headphones in isolated zones.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🚶‍♀️</span> Body Posture</div>
+                        <p>Walk with confidence, purpose, and chin up. Perpetrators often target individuals who appear distracted or anxious.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🛡️</span> Trust Instincts</div>
+                        <p>If a person, alley, or scenario feels unsafe, leave immediately without hesitating or worrying about appearing rude.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>📱</span> Digital Preparation</div>
+                        <p>Keep SOS speed dials active, share live location links with loved ones, and know local emergency helpline numbers.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: FEELING THREATENED OR FOLLOWED -->
+            <section class="topic-section" id="section-threatened">
+                <div>
+                    <span class="section-header-badge">02. Threat Escalation</span>
+                    <h2 class="section-title">Feeling Threatened or Followed in Public</h2>
+                    <p class="section-subtitle">Step-by-step evasive actions to take when you suspect someone is tailing or targeting you.</p>
+                </div>
+
+                <div class="action-list">
+                    <div class="action-item">
+                        <div class="action-number">1</div>
+                        <div class="action-text">
+                            <strong>Verify Suspicion</strong>
+                            <p>Cross the street purposefully or turn into a side store. If they mirror your path, confirm you are being followed.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-number">2</div>
+                        <div class="action-text">
+                            <strong>Head to Busy Spaces</strong>
+                            <p>Move toward crowded areas—restaurants, open shops, hotel lobbies, or petrol pumps. Never go directly home.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-number">3</div>
+                        <div class="action-text">
+                            <strong>Create Public Distraction</strong>
+                            <p>Use a loud, clear voice: "STAY BACK!" Draw public attention instantly to deter the perpetrator.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-number">4</div>
+                        <div class="action-text">
+                            <strong>Alert First Responders</strong>
+                            <p>Notify venue security or call national helpline 112 / women safety helplines immediately for support.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: PUBLIC & SHARED TRANSPORT SAFETY -->
+            <section class="topic-section" id="section-transport">
+                <div>
+                    <span class="section-header-badge">03. Transit Safety</span>
+                    <h2 class="section-title">Public & Shared Transport Safety</h2>
+                    <p class="section-subtitle">Precautionary measures when commuting in cabs, buses, auto-rickshaws, and trains.</p>
+                </div>
+
+                <div class="threat-grid">
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🚕</span> Ride Verification</div>
+                        <p>Check the driver profile, photo, and number plate match your app details before entering any ride-share vehicle.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>📍</span> Live Location Link</div>
+                        <p>Share your real-time travel status via GPS apps with trusted contacts whenever traveling late or in unfamiliar areas.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🚌</span> Strategic Position</div>
+                        <p>On buses or trains, sit close to the driver, conductor, or in well-lit designated women's compartments.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🎒</span> Bag & Valuables Care</div>
+                        <p>Keep bag zips closed and wear backpacks on your front in crowded transit platforms to prevent pickpocketing.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: WALKING & TRAVELLING ALONE AT NIGHT -->
+            <section class="topic-section" id="section-night">
+                <div>
+                    <span class="section-header-badge">04. Night Travel</span>
+                    <h2 class="section-title">Walking & Travelling Alone at Night</h2>
+                    <p class="section-subtitle">Safety strategies for late-night commutes and unlit streets.</p>
+                </div>
+
+                <div class="action-list action-list-3">
+                    <div class="action-item">
+                        <div class="action-number">1</div>
+                        <div class="action-text">
+                            <strong>Stick to Well-Lit Main Roads</strong>
+                            <p>Avoid dark shortcuts, unlit parks, or isolated vacant plots even if they shorten travel duration.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-number">2</div>
+                        <div class="action-text">
+                            <strong>Keep Hands Free & Ready</strong>
+                            <p>Avoid overburdening yourself with multiple bags. Keep keys or safety tools accessible in hand.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-number">3</div>
+                        <div class="action-text">
+                            <strong>Keep Ears Uncovered</strong>
+                            <p>Keep at least one ear free when using earphones so you can hear oncoming footsteps or vehicles.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: CROWD & PUBLIC EVENT SAFETY -->
+            <section class="topic-section" id="section-crowd">
+                <div>
+                    <span class="section-header-badge">05. Dense Gatherings</span>
+                    <h2 class="section-title">Crowd & Public Event Safety</h2>
+                    <p class="section-subtitle">Preventing injury during festival surges, sports events, and heavy public crowds.</p>
+                </div>
+
+                <div class="threat-grid threat-grid-3">
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🚪</span> Identify Emergency Exits</div>
+                        <p>Upon entering any venue or stadium, locate at least two emergency exit points right away.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🌊</span> Move Diagonally with Surge</div>
+                        <p>If caught in a dense crowd surge, move diagonally across the flow rather than fighting straight against it.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🫁</span> Protect Your Chest</div>
+                        <p>Hold your arms in front of your chest like a boxer to create breathing space and guard your ribcage.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: FIRE & BUILDING EMERGENCY SAFETY -->
+            <section class="topic-section" id="section-fire">
+                <div>
+                    <span class="section-header-badge">06. Building Hazards</span>
+                    <h2 class="section-title">Fire & Building Emergency Safety</h2>
+                    <p class="section-subtitle">Evacuation procedures during building fires or structural alerts.</p>
+                </div>
+
+                <div class="action-list action-list-3">
+                    <div class="action-item">
+                        <div class="action-number">1</div>
+                        <div class="action-text">
+                            <strong>Stay Low Under Smoke</strong>
+                            <p>Toxic smoke rises to the ceiling. Stay close to the floor where air is cooler and cleaner to breathe.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-number">2</div>
+                        <div class="action-text">
+                            <strong>Always Use Stairwells</strong>
+                            <p>Never take elevators during fire alarms as power cuts can trap you between floors.</p>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-number">3</div>
+                        <div class="action-text">
+                            <strong>Test Door Temperature</strong>
+                            <p>Touch closed doors with the back of your hand. If hot, do not open—seek an alternate escape route.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: ACCIDENT & SUDDEN EMERGENCY RESPONSE -->
+            <section class="topic-section" id="section-accident">
+                <div>
+                    <span class="section-header-badge">07. First Response</span>
+                    <h2 class="section-title">Accident & Sudden Emergency Response</h2>
+                    <p class="section-subtitle">Immediate actions during road accidents or medical emergencies.</p>
+                </div>
+
+                <div class="threat-grid threat-grid-3">
+                    <div class="threat-card">
+                        <div class="icon-title"><span>⚠️</span> Assess Scene Safety</div>
+                        <p>Ensure the surroundings are safe before assisting victims. Do not endanger yourself on active roadways.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>📞</span> Contact Emergency Services</div>
+                        <p>Call national emergency number 112 or local emergency services immediately. Provide exact landmarks, address, and condition of victims.</p>
+                    </div>
+                    <div class="threat-card">
+                        <div class="icon-title"><span>🩹</span> Control Heavy Bleeding</div>
+                        <p>Apply firm, direct pressure on heavy wounds using a clean cloth until professional paramedics arrive.</p>
+                    </div>
+                </div>
+
+                <!-- EMERGENCY ALERT BANNER -->
+                <div class="alert-box">
+                    <span class="alert-icon">🚨</span>
+                    <p>In immediate danger? Call National Emergency Response <strong>112</strong> or Women Helpline <strong>1091</strong> instantly.</p>
+                </div>
+            </section>
+
+        </article>
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. DATA-URL FILE NAVIGATION
+        function navigateToPage(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const targetUrl = selectedOption.getAttribute('data-url');
+
+            // Navigates to target file only if data-url is specified
+            if (targetUrl && targetUrl.trim() !== "") {
+                window.location.href = targetUrl;
+            }
+        }
+
+        // 2. LANGUAGE DROPDOWN TOGGLE
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const currentLangSpan = document.getElementById('currentLang');
+
+        langBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isExpanded = langBtn.getAttribute('aria-expanded') === 'true';
+            langBtn.setAttribute('aria-expanded', !isExpanded);
+            langMenu.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            langMenu.classList.remove('show');
+            langBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        // Language option selection handler
+        document.querySelectorAll('.lang-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const selectedCode = e.target.getAttribute('data-code');
+                currentLangSpan.textContent = selectedCode;
+                langMenu.classList.remove('show');
+                
+                // Save selected language to LocalStorage
+                localStorage.setItem('safeSphereLang', selectedCode);
+            });
+        });
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

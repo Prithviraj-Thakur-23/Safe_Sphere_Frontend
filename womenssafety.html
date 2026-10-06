@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women's Safety - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --text-main: #064E3B;
+            --text-muted: #1F2937;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --text-main: #2E1065;
+            --text-muted: #581C87;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.08);
+        }
+
+        /* --- DARK MODE OVERRIDES --- */
+        [data-theme="dark"] .logo-text { color: #FFFFFF; }
+        [data-theme="dark"] .logo-img { border-color: #FFFFFF; }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAVIGATION --- */
+        header { 
+            background: var(--bg-card); 
+            padding: 0 3%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            z-index: 100; 
+            border-bottom: 1px solid var(--border-light); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+            flex-shrink: 0;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; transition: transform 0.2s ease; cursor: pointer; }
+        .logo-container:active { transform: scale(0.97); }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; white-space: nowrap; }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 600; align-items: center; color: var(--text-muted); }
+        .nav-links li { transition: color 0.2s ease; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
+        .nav-links li:hover { color: var(--primary-blue); }
+        .quiz-btn { background: var(--primary-blue); color: #ffffff !important; padding: 0.5rem 1.2rem; border-radius: 20px; transition: all 0.2s ease; border: none; cursor: pointer; font-weight: 700; }
+        .quiz-btn:hover { background: var(--primary-blue-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--primary-light-bg); }
+
+        /* --- LANGUAGE DROPDOWN --- */
+        .lang-dropdown { position: relative; }
+        .lang-btn {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .lang-btn:hover { background: var(--primary-light-bg); border-color: var(--primary-blue); color: var(--primary-blue); }
+        .lang-btn .arrow { font-size: 0.75rem; transition: transform 0.2s ease; }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1000;
+            overflow: hidden;
+            padding: 0.3rem 0;
+        }
+        .lang-menu.show { display: block; }
+        .lang-option {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1rem;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lang-option:hover { background: var(--primary-light-bg); color: var(--primary-blue); }
+
+        /* --- TOPIC SEARCH DROPDOWN BAR --- */
+        .topic-bar-container {
+            width: 100%;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.75rem 3%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+            z-index: 90;
+            flex-shrink: 0;
+        }
+
+        .topic-search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            align-items: center;
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 0.2rem 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-search-wrapper:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px var(--primary-light-bg);
+        }
+
+        .topic-search-wrapper .search-icon {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-right: 0.6rem;
+        }
+
+        .topic-dropdown-select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.55rem 0;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .topic-dropdown-select option {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            padding: 0.5rem;
+        }
+
+        .topic-search-wrapper .dropdown-arrow {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            margin-left: 0.5rem;
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .layout-container { 
+            display: flex; 
+            flex: 1; 
+            min-height: 0; 
+            overflow: hidden; 
+        }
+
+        /* CENTER MAIN CONTENT AREA */
+        .main-content { 
+            flex: 1; 
+            padding: 2rem 4%; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1.5rem; 
+            overflow-y: auto; 
+            height: 100%; 
+            scrollbar-width: thin; 
+        }
+
+        .call-btn {
+            background: var(--accent-red);
+            color: #FFFFFF !important;
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(225, 29, 72, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        .call-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        /* --- EXPANDED BACKGROUND BOX CONTAINER --- */
+        .topic-card-container {
+            background: var(--bg-card);
+            padding: 2.5rem 3rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 1250px;
+            margin: 0 auto 2rem auto;
+            height: auto;
+            min-height: fit-content;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            padding: 0.35rem 0.9rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+        }
+
+        .topic-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .topic-description {
+            color: var(--text-muted);
+            font-size: 1.02rem;
+            line-height: 1.65;
+        }
+
+        /* --- CONTENT FORMATTING STYLES --- */
+        .content-section { margin-top: 2.2rem; }
+        .section-heading {
+            font-size: 1.28rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .threat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.4rem;
+            margin-top: 1rem;
+        }
+
+        .threat-card {
+            background: var(--primary-light-bg);
+            padding: 1.4rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-light);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .threat-card:hover { transform: translateY(-3px); }
+
+        .threat-card h4 {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+        }
+
+        .threat-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .action-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .action-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.96rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .action-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-blue);
+            font-weight: 900;
+            font-size: 1.15rem;
+        }
+
+        .alert-box {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 5px solid var(--accent-red);
+            padding: 1.4rem 1.6rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .alert-box h5 {
+            color: var(--accent-red);
+            font-weight: 800;
+            font-size: 1.05rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .helpline-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .helpline-chip {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* RESPONSIVE LAYOUT */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; }
+            .layout-container { flex-direction: column; height: auto; }
+            header { padding: 1rem 4%; flex-wrap: wrap; }
+            .main-content { padding: 1.2rem 3%; height: auto; }
+            .topic-card-container { padding: 1.5rem 1.2rem; border-radius: 14px; }
+            .threat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="window.location.href='index.html'">
+                <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img">
+                <span class="logo-text">SafeSphere</span>
+            </div>
+        </div>
+
+        
+    </header>
+
+    <!-- WOMEN'S SAFETY TOPIC SEARCH DROPDOWN BAR -->
+    <div class="topic-bar-container">
+        <div class="topic-search-wrapper">
+            <span class="search-icon">🔍</span>
+            <select id="womensSafetyTopicSelector" class="topic-dropdown-select" onchange="navigateToTopic(this)">
+                <option value="overview" data-url="womenssafety.html" selected>🛡️ SafeSphere Overview: Basic Women's Safety Information</option>
+                <option value="street-harassment" data-url="womenssafety(Street).html">📍 Street Harassment & Public Misconduct</option>
+                <option value="emergency-support" data-url="womenssafety(emergency).html">🚨 Women's Emergency & Support Awareness</option>
+                <option value="transport-travel" data-url="womenssafety(travel).html">🚕 Women's Safety During Cab / Auto / Transport Travel</option>
+                <option value="college-workplace" data-url="womenssafety(workplace).html">🏫 Safety at College & Workplace (POSH)</option>
+                <option value="digital-harassment" data-url="womenssafety(cyber).html">💻 Digital Harassment & Image / Identity Misuse</option>
+                <option value="parties-events" data-url="womenssafety(parties).html">🎉 Safety at Parties, Events & Social Gatherings</option>
+            </select>
+            <span class="dropdown-arrow">▼</span>
+        </div>
+    </div>
+
+    <!-- LAYOUT CONTAINER -->
+    <div class="layout-container">
+
+        <!-- CENTER MAIN CONTENT AREA -->
+        <main class="main-content">
+            <div>
+                <a href="index.html" class="call-btn" style="background: var(--primary-light-bg); color: var(--text-main) !important; box-shadow: none;">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+            <!-- EXPANDED TOPIC CARD CONTAINER -->
+            <article class="topic-card-container" id="topicCardContainer">
+                <span class="badge">SafeSphere Core Protection</span>
+                <h2 class="topic-title">Basic Women's Safety & Empowerment Information</h2>
+                <p class="topic-description">Personal security, situational awareness, legal protection, and emergency readiness are fundamental rights. SafeSphere equips women with practical defense tactics, digital safety habits, legal awareness (POSH, IPC/BNS provisions), and instant emergency response protocols.</p>
+
+                <div class="content-section">
+                    <h3 class="section-heading">⚠️ Key Women's Safety Threat Areas</h3>
+                    <div class="threat-grid">
+                        <div class="threat-card">
+                            <h4>🚶 Public & Street Misconduct</h4>
+                            <p>Catcalling, uninvited shadowing, unwanted physical proximity, and intimidation in public spaces.</p>
+                        </div>
+                        <div class="threat-card">
+                            <h4>🚕 Transit & Travel Risks</h4>
+                            <p>Unverified cab drivers, route deviations, child-lock traps, and isolated commute conditions.</p>
+                        </div>
+                        <div class="threat-card">
+                            <h4>🏫 Workplace & Academic Harassment</h4>
+                            <p>Quid pro quo coercion, hostile work environments, and non-consensual misconduct in institutions.</p>
+                        </div>
+                        <div class="threat-card">
+                            <h4>💻 Cyberstalking & Deepfake Misuse</h4>
+                            <p>Unauthorized photo morphing, online harassment, doxxing, and extortion using digital assets.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-heading">🛡️ Core Safety Principles</h3>
+                    <ul class="action-list">
+                        <li><strong>Situational Awareness:</strong> Keep heads up in unfamiliar areas; minimize headphone volume while commuting late.</li>
+                        <li><strong>Emergency Readiness:</strong> Configure phone SOS shortcuts (press power button 5x) to send automated location alerts.</li>
+                        <li><strong>Know Your Legal Rights:</strong> Zero FIR rules permit registering a criminal complaint at any police station regardless of jurisdiction.</li>
+                        <li><strong>Assertive Boundaries:</strong> Use loud, firm vocal cues to shut down uncomfortable behavior early in public or professional settings.</li>
+                    </ul>
+                </div>
+
+                <div class="alert-box">
+                    <h5>🚨 Emergency Helpline Directory</h5>
+                    <div class="helpline-grid">
+                        <span class="helpline-chip">📞 Emergency Services: 112</span>
+                        <span class="helpline-chip">👩 Women's Helpline: 1091</span>
+                        <span class="helpline-chip">🏛️ National Commission for Women: 7827170170</span>
+                        <span class="helpline-chip">💻 Cybercrime Helpline: 1930</span>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Theme Pre-loader
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // Dropdown File Navigation
+        function navigateToTopic(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const targetUrl = selectedOption.getAttribute('data-url');
+            
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        }
+
+        // Synchronize selected option with current page URL on load
+        function syncDropdownWithCurrentPage() {
+            const selector = document.getElementById('womensSafetyTopicSelector');
+            if (!selector) return;
+
+            const currentPath = window.location.pathname;
+            const currentPage = decodeURIComponent(currentPath.substring(currentPath.lastIndexOf('/') + 1));
+
+            for (let i = 0; i < selector.options.length; i++) {
+                const option = selector.options[i];
+                const url = option.getAttribute('data-url');
+                
+                if (url && (currentPage === url || decodeURIComponent(url) === currentPage)) {
+                    selector.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applySavedTheme();
+            syncDropdownWithCurrentPage();
+        });
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'safeSphereTheme' && e.newValue) {
+                document.documentElement.setAttribute('data-theme', e.newValue);
+            }
+        });
+
+        // Language Dropdown Controller
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const currentLang = document.getElementById('currentLang');
+
+        if (langBtn && langMenu) {
+            langBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isExpanded = langMenu.classList.toggle('show');
+                langBtn.setAttribute('aria-expanded', isExpanded);
+            });
+
+            const langOptions = langMenu.querySelectorAll('.lang-option');
+            langOptions.forEach(option => {
+                option.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const selectedCode = option.getAttribute('data-code');
+                    currentLang.innerText = selectedCode;
+                    langMenu.classList.remove('show');
+                    langBtn.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            window.addEventListener('click', (event) => {
+                if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
+                    langMenu.classList.remove('show');
+                    langBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

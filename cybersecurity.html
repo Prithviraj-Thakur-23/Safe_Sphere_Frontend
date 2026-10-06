@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --text-main: #064E3B;
+            --text-muted: #1F2937;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --text-main: #2E1065;
+            --text-muted: #581C87;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.08);
+        }
+
+        /* --- DARK MODE OVERRIDES --- */
+        [data-theme="dark"] .logo-text { color: #FFFFFF; }
+        [data-theme="dark"] .logo-img { border-color: #FFFFFF; }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAVIGATION --- */
+        header { 
+            background: var(--bg-card); 
+            padding: 0 3%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            z-index: 100; 
+            border-bottom: 1px solid var(--border-light); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+            flex-shrink: 0;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; transition: transform 0.2s ease; cursor: pointer; }
+        .logo-container:active { transform: scale(0.97); }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; white-space: nowrap; }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 600; align-items: center; color: var(--text-muted); }
+        .nav-links li { transition: color 0.2s ease; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
+        .nav-links li:hover { color: var(--primary-blue); }
+        .quiz-btn { background: var(--primary-blue); color: #ffffff !important; padding: 0.5rem 1.2rem; border-radius: 20px; transition: all 0.2s ease; border: none; cursor: pointer; }
+        .quiz-btn:hover { background: var(--primary-blue-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--primary-light-bg); }
+
+        /* --- LANGUAGE DROPDOWN --- */
+        .lang-dropdown { position: relative; }
+        .lang-btn {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .lang-btn:hover { background: var(--primary-light-bg); border-color: var(--primary-blue); color: var(--primary-blue); }
+        .lang-btn .arrow { font-size: 0.75rem; transition: transform 0.2s ease; }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1000;
+            overflow: hidden;
+            padding: 0.3rem 0;
+        }
+        .lang-menu.show { display: block; }
+        .lang-option {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1rem;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lang-option:hover { background: var(--primary-light-bg); color: var(--primary-blue); }
+
+        /* --- CYBER SECURITY TOPIC SEARCH DROPDOWN BAR --- */
+        .topic-bar-container {
+            width: 100%;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.75rem 3%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+            z-index: 90;
+            flex-shrink: 0;
+        }
+
+        .topic-search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            align-items: center;
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 0.2rem 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-search-wrapper:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px var(--primary-light-bg);
+        }
+
+        .topic-search-wrapper .search-icon {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-right: 0.6rem;
+        }
+
+        .topic-dropdown-select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.55rem 0;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .topic-dropdown-select option {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            padding: 0.5rem;
+        }
+
+        .topic-search-wrapper .dropdown-arrow {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            margin-left: 0.5rem;
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .layout-container { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+
+        /* CENTER MAIN CONTENT */
+        .main-content { flex: 1; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; overflow-y: auto; height: 100%; scrollbar-width: thin; }
+
+        .call-btn {
+            background: var(--accent-red);
+            color: #FFFFFF !important;
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(225, 29, 72, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        .call-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        .topic-card-container {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            min-height: 400px;
+        }
+
+        /* --- CYBERSECURITY CONTENT CARD STYLES --- */
+        .cyber-intro {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .intro-header .badge {
+            display: inline-block;
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.6rem;
+        }
+
+        .intro-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.6rem;
+            line-height: 1.2;
+        }
+
+        .intro-header .lead-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* CIA Triad Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .pillar-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-blue);
+        }
+
+        .pillar-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .pillar-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .pillar-card p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        /* Threats Section */
+        .threats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .threat-item {
+            background: var(--bg-main);
+            border-left: 4px solid var(--primary-blue);
+            padding: 0.85rem 1.1rem;
+            border-radius: 0 10px 10px 0;
+            border-top: 1px solid var(--border-light);
+            border-right: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .threat-tag {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .threat-item p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        /* Tips Box */
+        .quick-tips-box {
+            background: var(--primary-light-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+
+        .quick-tips-box h3 {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .quick-tips-box ul {
+            list-style-type: disc;
+            padding-left: 1.2rem;
+        }
+
+        .quick-tips-box li {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        /* RESPONSIVE LAYOUT */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; }
+            .layout-container { flex-direction: column; height: auto; }
+            header { padding: 1rem 4%; flex-wrap: wrap; }
+            .main-content { padding: 1.2rem 4%; height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="window.location.href='index.html'">
+                <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img">
+                <span class="logo-text">SafeSphere</span>
+            </div>
+        </div>
+
+       
+    </header>
+
+    <!-- CYBER SECURITY TOPIC SEARCH DROPDOWN BAR -->
+    <div class="topic-bar-container">
+        <div class="topic-search-wrapper">
+            <span class="search-icon">🔍</span>
+            <!-- Updated: Added data-url to options for seamless routing -->
+            <select id="cyberTopicSelector" class="topic-dropdown-select" onchange="loadTopicData(this)">
+                <option value="" disabled selected>Select or search a Cyber Security Topic...</option>
+                <option value="phishing" data-url="cyber(phishing).html">Phishing, Fake Links & Email/SMS Scams</option>
+                <option value="otp" data-url="cyber(otp).html">OTP Scams</option>
+                <option value="customer-care" data-url="cyber(customer-care).html">Fake Customer-Care Scams</option>
+                <option value="social-hacking" data-url="cyber(social-hacking).html">Social Media Account Hacking</option>
+                <option value="identity-theft" data-url="cyber(identity-theft).html">Identity Theft</option>
+                <option value="fake-kyc" data-url="cyber(fake-links).html">Fake KYC / Account Blocking Scams</option>
+                <option value="sim-swap" data-url="cyber(sim-fraud).html">SIM Swap / SIM-related Fraud</option>
+                <option value="malware" data-url="cyber(malware-apps).html">Malware & Suspicious App Downloads</option>
+                <option value="deepfake" data-url="cyber(deepfake-scams).html">Deepfake / AI-based Scams</option>
+                <option value="social-engineering" data-url="cyber(social-engineering).html">Social Engineering</option>
+            </select>
+            <span class="dropdown-arrow">▼</span>
+        </div>
+    </div>
+
+    <!-- LAYOUT CONTAINER -->
+    <div class="layout-container">
+        <!-- CENTER MAIN CONTENT AREA -->
+        <main class="main-content">
+            <div>
+                <a href="index.html" class="call-btn" style="background: var(--primary-light-bg); color: var(--text-main) !important; box-shadow: none;">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+            <article class="topic-card-container" id="topicCardContainer">
+                <!-- Cyber security intro content embedded directly -->
+                <div class="cyber-intro">
+                    <!-- Hero Section -->
+                    <div class="intro-header">
+                        <span class="badge">SafeSphere Fundamentals</span>
+                        <h1>What is Cybersecurity?</h1>
+                        <p class="lead-text">
+                            Cybersecurity is the practice of protecting systems, networks, devices, and data from digital attacks, unauthorized access, or damage. It ensures that your personal information, financial transactions, and online identity remain private and secure.
+                        </p>
+                    </div>
+
+                    <!-- CIA Triad Pillars -->
+                    <h2 class="section-title">The 3 Core Pillars</h2>
+                    <div class="pillars-grid">
+                        <div class="pillar-card">
+                            <div class="pillar-icon">🔒</div>
+                            <h3>Confidentiality</h3>
+                            <p>Keeping sensitive information private and ensuring it is accessible only to authorized people.</p>
+                        </div>
+                        <div class="pillar-card">
+                            <div class="pillar-icon">🛡️</div>
+                            <h3>Integrity</h3>
+                            <p>Protecting data against unauthorized changes, tampering, or deletion.</p>
+                        </div>
+                        <div class="pillar-card">
+                            <div class="pillar-icon">⚡</div>
+                            <h3>Availability</h3>
+                            <p>Ensuring services, systems, and data are always reliable and available when you need them.</p>
+                        </div>
+                    </div>
+
+                    <!-- Major Threats Overview -->
+                    <h2 class="section-title">Common Digital Threats</h2>
+                    <div class="threats-list">
+                        <div class="threat-item">
+                            <span class="threat-tag">Phishing & Social Engineering</span>
+                            <p>Fake emails, messages, or calls that trick you into revealing sensitive passwords, OTPs, or credit card details.</p>
+                        </div>
+                        <div class="threat-item">
+                            <span class="threat-tag">Malware & Ransomware</span>
+                            <p>Harmful software secretly installed on devices to steal files, spy on activity, or lock systems for ransom.</p>
+                        </div>
+                        <div class="threat-item">
+                            <span class="threat-tag">Identity Theft</span>
+                            <p>Attacks where criminals steal personal credentials to impersonate you, open fake accounts, or make fraud transfers.</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Safety Checklist -->
+                    <div class="quick-tips-box">
+                        <h3>💡 Daily Safety Rules</h3>
+                        <ul>
+                            <li><strong>Strong Passwords:</strong> Never reuse the same password across multiple online accounts.</li>
+                            <li><strong>Enable 2FA:</strong> Add an extra layer of security to prevent unauthorized logins.</li>
+                            <li><strong>Verify Before Clicking:</strong> Always double-check web URLs and email senders before clicking links.</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Store default intro template for quick restoration
+        const defaultIntroHTML = document.getElementById('topicCardContainer').innerHTML;
+
+        // 0. Automatically apply theme saved on Home page
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        document.addEventListener('DOMContentLoaded', applySavedTheme);
+
+        // Real-time synchronization if changed on the Home page in another tab
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'safeSphereTheme' && e.newValue) {
+                document.documentElement.setAttribute('data-theme', e.newValue);
+            }
+        });
+
+        // 1. Language Dropdown Controller
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const currentLang = document.getElementById('currentLang');
+
+        if (langBtn && langMenu) {
+            langBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                langMenu.classList.toggle('show');
+            });
+
+            const langOptions = langMenu.querySelectorAll('.lang-option');
+            langOptions.forEach(option => {
+                option.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const selectedCode = option.getAttribute('data-code');
+                    currentLang.innerText = selectedCode;
+                    langMenu.classList.remove('show');
+                });
+            });
+
+            window.addEventListener('click', (event) => {
+                if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
+                    langMenu.classList.remove('show');
+                }
+            });
+        }
+
+        // 2. Cyber Security Topic Selection Handler (Dynamic URL Navigation)
+        function loadTopicData(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const targetUrl = selectedOption.getAttribute('data-url');
+            
+            // If a custom data-url is specified, redirect the user to that page
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        }
+
+        // 3. Emergency Direct Call Handler
+        document.addEventListener('DOMContentLoaded', () => {
+            const callButtons = document.querySelectorAll('.call-btn');
+            callButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const phoneUrl = this.getAttribute('href');
+                    if (phoneUrl && phoneUrl.startsWith('tel:')) {
+                        window.location.href = phoneUrl;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Use of AI & Chatbots - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES (Matches index.html) --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --text-main: #064E3B;
+            --text-muted: #1F2937;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --text-main: #2E1065;
+            --text-muted: #581C87;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.08);
+        }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER --- */
+        header { 
+            background: var(--bg-card); 
+            padding: 0 5%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border-light); 
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 600; align-items: center; color: var(--text-muted); }
+        .nav-links li:hover { color: var(--primary-blue); }
+
+        /* --- BROAD LAYOUT CONTAINER --- */
+        .page-container {
+            max-width: 1350px;
+            width: 95%;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .back-btn {
+            background: var(--primary-light-bg);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            border: 1px solid var(--border-light);
+            transition: all 0.2s ease;
+            width: fit-content;
+        }
+        .back-btn:hover { background: var(--primary-blue); color: #ffffff !important; }
+
+        /* --- HERO BANNER --- */
+        .hero-banner {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: fit-content;
+        }
+        .hero-banner h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+        .hero-banner p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 1000px;
+        }
+
+        /* --- WIDE DASHBOARD GRID SYSTEM --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .col-12 { grid-column: span 12; }
+        .col-6 { grid-column: span 6; }
+
+        @media (max-width: 1024px) {
+            .col-6 { grid-column: span 12; }
+        }
+
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Real-Life Scenarios Card */
+        .scenario-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary-blue);
+        }
+        .scenario-quote {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Steps Layout */
+        .steps-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .step-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .step-badge {
+            background: var(--primary-blue);
+            color: #ffffff;
+            font-weight: 800;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        .step-box p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        /* List Items styling */
+        .styled-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .styled-list li {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+        .styled-list li::before {
+            content: "•";
+            color: var(--primary-blue);
+            font-weight: 800;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .warning-list li::before {
+            content: "⚠️";
+            font-size: 0.9rem;
+        }
+
+        .action-list li::before {
+            content: "🛡️";
+            font-size: 0.9rem;
+        }
+
+        .source-footer {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-container { width: 95%; margin: 1rem auto; }
+            .hero-banner h1 { font-size: 1.8rem; }
+            .card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER (Matching index.html style) -->
+    <header>
+        <div class="logo-container" onclick="window.location.href='index.html'">
+            <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img">
+            <span class="logo-text">SafeSphere</span>
+        </div>
+        <ul class="nav-links">
+            
+        </ul>
+    </header>
+
+    <!-- BROAD PAGE CONTAINER -->
+    <div class="page-container">
+        <div>
+            <a href="digital.html" class="back-btn">
+                ← Back 
+            </a>
+        </div>
+
+        <!-- HERO BANNER -->
+        <section class="hero-banner">
+            <span class="badge">Artificial Intelligence & Safety</span>
+            <h1>Safe Use of AI & Chatbots Guide</h1>
+            <p>
+                AI chatbots are computer systems that can understand prompts and generate responses. They are useful for education, coding, writing, customer service, and many other tasks.
+            </p>
+        </section>
+
+        <!-- DASHBOARD GRID CONTENT -->
+        <div class="dashboard-grid">
+
+            <!-- REAL-LIFE EXAMPLE (Full Width) -->
+            <div class="card col-12">
+                <h2 class="section-title">🚨 Real-World Scenario</h2>
+                <div class="scenario-box">
+                    <p class="scenario-quote">
+                        You receive a WhatsApp voice message that sounds exactly like your friend:<br>
+                        <em>"I'm in an emergency. Please send me ₹20,000 immediately."</em><br>
+                        The voice may have been created using AI voice-cloning technology.
+                    </p>
+                </div>
+            </div>
+
+            <!-- HOW IT WORKS (Full Width Steps) -->
+            <div class="card col-12">
+                <h2 class="section-title">⚙️ How AI Chatbots Work</h2>
+                <div class="steps-wrapper">
+                    <div class="step-box">
+                        <div class="step-badge">1</div>
+                        <p><strong>Input Entry:</strong> You enter a question or prompt into the interface.</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-badge">2</div>
+                        <p><strong>Processing:</strong> The AI model processes your input parameters.</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-badge">3</div>
+                        <p><strong>Generation:</strong> The system generates a response, sometimes incorporating tools like web search.</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-badge">4</div>
+                        <p><strong>Verification:</strong> Because AI outputs can occasionally be incorrect or misleading, important facts should always be verified.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCAMMER TRICKS (Split Left) -->
+            <div class="card col-6">
+                <h2 class="section-title">🎭 AI Scammer Tricks</h2>
+                <ul class="styled-list">
+                    <li>AI-generated fake voice cloning.</li>
+                    <li>Deceptive fake AI videos and images (deepfakes).</li>
+                    <li>Fake AI customer-support accounts.</li>
+                    <li>Fraudulent fake AI investment schemes.</li>
+                    <li>Sophisticated AI-generated phishing messages.</li>
+                    <li>Fake AI websites and fraudulent apps.</li>
+                    <li>Coercing users into uploading sensitive documents.</li>
+                </ul>
+            </div>
+
+            <!-- RED FLAGS (Split Right) -->
+            <div class="card col-6" style="border-color: var(--accent-red);">
+                <h2 class="section-title" style="color: var(--accent-red);">🚩 Major Red Flags</h2>
+                <ul class="styled-list warning-list">
+                    <li>Someone urgently demands money using an AI-generated voice or video.</li>
+                    <li>A website or service promises "guaranteed profit with AI."</li>
+                    <li>An AI service requests unnecessary sensitive information.</li>
+                    <li>A chatbot asks for passwords, OTPs, or banking information.</li>
+                    <li>A fake AI app requests permission to install unknown software.</li>
+                </ul>
+            </div>
+
+            <!-- HOW TO STAY SAFE (Split Left) -->
+            <div class="card col-6" style="background: var(--primary-light-bg);">
+                <h2 class="section-title">🛡️ Prevention & Safety Rules</h2>
+                <ul class="styled-list action-list">
+                    <li>Never share OTPs, PINs, or passwords with a chatbot.</li>
+                    <li>Avoid uploading sensitive documents unnecessarily.</li>
+                    <li>Always verify important AI-generated information.</li>
+                    <li>Verify unusual money requests through an alternate communication method.</li>
+                    <li>Use official websites and apps for financial transactions.</li>
+                    <li>Never trust a voice or video alone as absolute proof of identity.</li>
+                </ul>
+            </div>
+
+            <!-- WHAT TO DO IF IT HAPPENS (Split Right) -->
+            <div class="card col-6" style="border-color: var(--accent-red);">
+                <h2 class="section-title" style="color: var(--accent-red);">⚡ Incident Response</h2>
+                <ul class="styled-list">
+                    <li>Never share passwords, OTPs, PINs, or banking details.</li>
+                    <li>Verify suspicious voice or video requests using another communication method.</li>
+                    <li>Never send money based solely on a voice or video message.</li>
+                    <li>Stick strictly to official websites and verified apps.</li>
+                    <li>Cross-check and verify important AI-generated facts.</li>
+                    <li>Report fraudulent accounts and malicious content immediately.</li>
+                    <li>If money is lost, contact your bank and report the incident right away.</li>
+                </ul>
+            </div>
+
+            <!-- SOURCE FOOTER (Full Width) -->
+            <div class="card col-12" style="padding: 1.5rem; text-align: center;">
+                <div class="source-footer" style="border-top: none; padding-top: 0; margin-top: 0;">
+                    <p><strong>Source & Official Portals:</strong> National Cyber Crime Reporting Portal | CERT-In | Federal Trade Commission – Artificial Intelligence</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

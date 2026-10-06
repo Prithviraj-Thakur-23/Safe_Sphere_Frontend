@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Safety - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --accent-warning: #D97706;
+            --text-main: #064E3B;
+            --text-muted: #374151;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.1);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --accent-warning: #F59E0B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --accent-warning: #D97706;
+            --text-main: #2E1065;
+            --text-muted: #4C1D95;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.12);
+        }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAVIGATION --- */
+        header { 
+            background: var(--bg-card); 
+            padding: 0 3%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            z-index: 100; 
+            border-bottom: 1px solid var(--border-light); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; transition: transform 0.2s ease; cursor: pointer; }
+        .logo-container:active { transform: scale(0.97); }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; white-space: nowrap; }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 600; align-items: center; color: var(--text-muted); }
+        .nav-links li { transition: color 0.2s ease; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
+        .nav-links li:hover { color: var(--primary-blue); }
+        .quiz-btn { background: var(--primary-blue); color: #ffffff !important; padding: 0.5rem 1.2rem; border-radius: 20px; transition: all 0.2s ease; border: none; cursor: pointer; font-weight: 700; }
+        .quiz-btn:hover { background: var(--primary-blue-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
+
+        /* --- LANGUAGE DROPDOWN --- */
+        .lang-dropdown { position: relative; }
+        .lang-btn {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .lang-btn:hover { background: var(--primary-light-bg); border-color: var(--primary-blue); color: var(--primary-blue); }
+        .lang-btn .arrow { font-size: 0.75rem; transition: transform 0.2s ease; }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1000;
+            overflow: hidden;
+            padding: 0.3rem 0;
+        }
+        .lang-menu.show { display: block; }
+        .lang-option {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1rem;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lang-option:hover { background: var(--primary-light-bg); color: var(--primary-blue); }
+
+        /* --- FINANCIAL SAFETY TOPIC SEARCH DROPDOWN BAR --- */
+        .topic-bar-container {
+            width: 100%;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.75rem 3%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+            z-index: 90;
+        }
+
+        .topic-search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            align-items: center;
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 0.3rem 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-search-wrapper:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px var(--primary-light-bg);
+        }
+
+        .topic-search-wrapper .search-icon {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-right: 0.6rem;
+        }
+
+        .topic-dropdown-select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.55rem 0;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .topic-dropdown-select option {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            padding: 0.5rem;
+        }
+
+        .topic-search-wrapper .dropdown-arrow {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            margin-left: 0.5rem;
+        }
+
+        /* --- LAYOUT CONTAINER & MAXIMIZED CARD --- */
+        .layout-container { 
+            display: flex; 
+            flex: 1; 
+            height: calc(100vh - var(--header-height) - 62px); 
+            overflow: hidden; 
+            padding: 1.2rem 3%;
+        }
+
+        .main-content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1rem; 
+            height: 100%; 
+            width: 100%;
+        }
+
+        .top-nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            background: var(--primary-light-bg);
+            color: var(--text-main);
+            padding: 0.45rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-light);
+        }
+        .back-btn:hover { 
+            background: var(--primary-blue); 
+            color: #FFFFFF; 
+            border-color: var(--primary-blue);
+        }
+
+        /* MAXIMIZED CARD CONTAINER */
+        .topic-card-container {
+            flex: 1;
+            background: var(--bg-card);
+            padding: 2.2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-light) transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* CARD CONTENT STYLING */
+        .content-header {
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .content-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            padding: 1.4rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-box-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .threat-tag { color: var(--accent-red); }
+        .warning-tag { color: var(--accent-warning); }
+        .safe-tag { color: var(--primary-blue); }
+
+        .bullet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .bullet-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .bullet-icon {
+            font-size: 1rem;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+
+        .highlight-banner {
+            background: var(--primary-light-bg);
+            border-left: 4px solid var(--primary-blue);
+            padding: 1rem 1.2rem;
+            border-radius: 0 12px 12px 0;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .summary-card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .summary-item {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .summary-item:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .summary-item h4 {
+            color: var(--primary-blue);
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-item p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        /* RESPONSIVE LAYOUT */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; }
+            .layout-container { height: auto; padding: 1rem 3%; }
+            header { padding: 1rem 4%; flex-wrap: wrap; }
+            .topic-card-container { padding: 1.2rem; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="window.location.href='index.html'">
+                <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/45/059669/FFFFFF?text=SS'">
+                <span class="logo-text">SafeSphere</span>
+            </div>
+        </div>
+
+       
+    </header>
+
+    <!-- FINANCIAL SAFETY TOPIC SEARCH DROPDOWN BAR -->
+    <div class="topic-bar-container">
+        <div class="topic-search-wrapper">
+            <span class="search-icon">🔍</span>
+            <select id="financialTopicSelector" class="topic-dropdown-select" onchange="handleTopicSelection(this)">
+                <option value="overview" data-url="financial-safety.html" selected>Overview: Essential Financial Safety Guide</option>
+                <option value="upi-fraud" data-url="financial(upi-frauds).html">UPI & Digital Payment Fraud</option>
+                <option value="banking-fraud" data-url="financial(banking).html">Banking & Phishing Fraud</option>
+                <option value="card-fraud" data-url="financial(card-fraud).html">Debit / Credit Card Fraud</option>
+                <option value="investment-scams" data-url="financial(investment-scams).html">Investment & Stock Market Scams</option>
+                <option value="fake-loan-kyc" data-url="financial(bank).html">Fake Loan & KYC Verification Scams</option>
+                <option value="atm-skimming" data-url="financial(atm).html">ATM Skimming & Card Trapping</option>
+            </select>
+            <span class="dropdown-arrow">▼</span>
+        </div>
+    </div>
+
+    <!-- LAYOUT CONTAINER -->
+    <div class="layout-container">
+        <main class="main-content">
+            <div class="top-nav-bar">
+                <a href="index.html" class="back-btn">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+            <!-- MAXIMIZED BACKGROUND CARD CONTAINER -->
+            <article class="topic-card-container" id="topicCardContainer">
+                <!-- Content dynamically injected or linked -->
+            </article>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Database of Financial Safety Information & Threats (Fallback for single-page switching)
+        const financialTopicsData = {
+            'overview': {
+                title: '🛡️ Comprehensive Financial Safety Guide',
+                subtitle: 'Learn about modern financial threats, fraud tactics, and essential security practices to safeguard your money.',
+                content: `
+                    <div class="highlight-banner">
+                        <span>💡</span>
+                        <div><strong>Golden Rule of Financial Safety:</strong> Never share your PIN, OTP, CVV, passwords, or click unknown links sent via SMS, WhatsApp, or Email.</div>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-box-title threat-tag">⚠️ Common Financial Threats Today</div>
+                            <div class="bullet-list">
+                                <div class="bullet-item"><span class="bullet-icon">🔴</span> <span><strong>UPI Scams:</strong> Fraudulent collect requests & QR code traps asking you to enter PIN to receive money.</span></div>
+                                <div class="bullet-item"><span class="bullet-icon">🔴</span> <span><strong>Phishing & Vishing:</strong> Fake banking calls & websites requesting passwords or OTPs.</span></div>
+                                <div class="bullet-item"><span class="bullet-icon">🔴</span> <span><strong>Investment Scams:</strong> Guaranteed high returns via WhatsApp, Telegram, or fake trading apps.</span></div>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-box-title safe-tag">✅ Core Protection Guidelines</div>
+                            <div class="bullet-list">
+                                <div class="bullet-item"><span class="bullet-icon">🛡️</span> <span><strong>PIN is strictly for SENDING:</strong> Receiving money NEVER requires entering your UPI PIN.</span></div>
+                                <div class="bullet-item"><span class="bullet-icon">🛡️</span> <span><strong>Enable 2FA:</strong> Use two-factor authentication on all bank accounts & payment apps.</span></div>
+                                <div class="bullet-item"><span class="bullet-icon">🛡️</span> <span><strong>Verify Apps:</strong> Only download banking applications from official Google Play / App Store.</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--primary-blue); font-size: 1.25rem; font-weight: 700; margin-top: 0.5rem;">Explore Specific Threats Below:</h3>
+                    
+                    <div class="summary-card-list">
+                        <div class="summary-item" onclick="navigateToTopic('upi-fraud', 'financial(upi-frauds).html')">
+                            <h4>📲 UPI & Digital Payments</h4>
+                            <p>Request Money scams, fake QR codes, and wrong transaction refund traps.</p>
+                        </div>
+                        <div class="summary-item" onclick="navigateToTopic('banking-fraud', 'financial-banking.html')">
+                            <h4>🏦 Net Banking Fraud</h4>
+                            <p>Fake bank websites, urgent update SMS, and remote access software attacks.</p>
+                        </div>
+                        <div class="summary-item" onclick="navigateToTopic('card-fraud', 'financial-card.html')">
+                            <h4>💳 Card & Online Shopping</h4>
+                            <p>Card cloning, CVV theft, international transaction misuse, and fake websites.</p>
+                        </div>
+                        <div class="summary-item" onclick="navigateToTopic('investment-scams', 'financial-investment.html')">
+                            <h4>📈 Investment & Trading Scams</h4>
+                            <p>Crypto ponzi schemes, guaranteed stock tips, and fake trading dashboards.</p>
+                        </div>
+                        <div class="summary-item" onclick="navigateToTopic('fake-loan-kyc', 'financial-loan.html')">
+                            <h4>📋 Fake Loan & KYC Scams</h4>
+                            <p>Instant approval loan apps, blackmail traps, and bank account block alerts.</p>
+                        </div>
+                        <div class="summary-item" onclick="navigateToTopic('atm-skimming', 'financial-atm.html')">
+                            <h4>🏧 ATM Skimming & Trapping</h4>
+                            <p>Physical card duplicators, hidden keypads, and fake ATM help scams.</p>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Theme management
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applySavedTheme();
+            loadTopicData('overview');
+        });
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'safeSphereTheme' && e.newValue) {
+                document.documentElement.setAttribute('data-theme', e.newValue);
+            }
+        });
+
+        // Language Dropdown Controller
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const currentLang = document.getElementById('currentLang');
+
+        if (langBtn && langMenu) {
+            langBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                langMenu.classList.toggle('show');
+            });
+
+            langMenu.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    currentLang.innerText = option.getAttribute('data-code');
+                    langMenu.classList.remove('show');
+                });
+            });
+
+            window.addEventListener('click', (event) => {
+                if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
+                    langMenu.classList.remove('show');
+                }
+            });
+        }
+
+        // Handle navigation: Try to navigate to the external anchor file, fallback to inline renderer if needed
+        function handleTopicSelection(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const targetUrl = selectedOption.getAttribute('data-url');
+            const topicKey = selectElement.value;
+
+            if (targetUrl && topicKey !== 'overview') {
+                // Navigate to the separate anchor/HTML page
+                window.location.href = targetUrl;
+            } else {
+                loadTopicData(topicKey);
+            }
+        }
+
+        function navigateToTopic(topicKey, targetUrl) {
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            } else {
+                loadTopicData(topicKey);
+            }
+        }
+
+        function loadTopicData(topicKey) {
+            const cardContainer = document.getElementById('topicCardContainer');
+            const data = financialTopicsData[topicKey] || financialTopicsData['overview'];
+
+            cardContainer.innerHTML = `
+                <div class="content-header">
+                    <h2 class="content-title">${data.title}</h2>
+                    <p class="content-subtitle">${data.subtitle}</p>
+                </div>
+                ${data.content}
+            `;
+
+            const selector = document.getElementById('financialTopicSelector');
+            if (selector && selector.value !== topicKey) {
+                selector.value = topicKey;
+            }
+        }
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>

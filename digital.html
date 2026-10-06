@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Safety - SafeSphere</title>
+    
+    <!-- INSTANT THEME PRE-LOADER -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- THEME DEFINITIONS & PALETTES --- */
+        :root, [data-theme="emerald"] {
+            --bg-main: #F0FDF4;
+            --bg-card: #FFFFFF;
+            --primary-blue: #059669;
+            --primary-blue-hover: #047857;
+            --primary-light-bg: #D1FAE5;
+            --accent-red: #DC2626;
+            --text-main: #064E3B;
+            --text-muted: #1F2937;
+            --text-accent: #047857;
+            --border-light: #A7F3D0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 75px;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0F172A;
+            --bg-card: #1E293B;
+            --primary-blue: #38BDF8;
+            --primary-blue-hover: #0284C7;
+            --primary-light-bg: #334155;
+            --accent-red: #EF4444;
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --text-accent: #7DD3FC;
+            --border-light: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="purple"] {
+            --bg-main: #FAF5FF;
+            --bg-card: #FFFFFF;
+            --primary-blue: #7C3AED;
+            --primary-blue-hover: #6D28D9;
+            --primary-light-bg: #F3E8FF;
+            --accent-red: #E11D48;
+            --text-main: #2E1065;
+            --text-muted: #581C87;
+            --text-accent: #6D28D9;
+            --border-light: #DDD6FE;
+            --shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.08);
+        }
+
+        /* --- DARK MODE OVERRIDES --- */
+        [data-theme="dark"] .logo-text { color: #FFFFFF; }
+        [data-theme="dark"] .logo-img { border-color: #FFFFFF; }
+
+        /* --- GLOBAL BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-family); 
+            line-height: 1.6; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAVIGATION --- */
+        header { 
+            flex-shrink: 0;
+            background: var(--bg-card); 
+            padding: 0 3%; 
+            height: var(--header-height); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            z-index: 100; 
+            border-bottom: 1px solid var(--border-light); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; transition: transform 0.2s ease; cursor: pointer; }
+        .logo-container:active { transform: scale(0.97); }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); }
+        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 0.5px; white-space: nowrap; }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.9rem; font-weight: 600; align-items: center; color: var(--text-muted); }
+        .nav-links li { transition: color 0.2s ease; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
+        .nav-links li:hover { color: var(--primary-blue); }
+        .quiz-btn { background: var(--primary-blue); color: #ffffff !important; padding: 0.5rem 1.2rem; border-radius: 20px; transition: all 0.2s ease; border: none; cursor: pointer; font-weight: 700; }
+        .quiz-btn:hover { background: var(--primary-blue-hover); transform: translateY(-2px); box-shadow: 0 4px 8px var(--primary-light-bg); }
+
+        /* --- LANGUAGE DROPDOWN --- */
+        .lang-dropdown { position: relative; }
+        .lang-btn {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .lang-btn:hover { background: var(--primary-light-bg); border-color: var(--primary-blue); color: var(--primary-blue); }
+        .lang-btn .arrow { font-size: 0.75rem; transition: transform 0.2s ease; }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1000;
+            overflow: hidden;
+            padding: 0.3rem 0;
+        }
+        .lang-menu.show { display: block; }
+        .lang-option {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1rem;
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lang-option:hover { background: var(--primary-light-bg); color: var(--primary-blue); }
+
+        /* --- TOPIC SEARCH DROPDOWN BAR --- */
+        .topic-bar-container {
+            flex-shrink: 0;
+            width: 100%;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.75rem 3%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+            z-index: 90;
+        }
+
+        .topic-search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            align-items: center;
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 0.2rem 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-search-wrapper:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px var(--primary-light-bg);
+        }
+
+        .topic-search-wrapper .search-icon {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-right: 0.6rem;
+        }
+
+        .topic-dropdown-select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.55rem 0;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .topic-dropdown-select option {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            padding: 0.5rem;
+        }
+
+        .topic-search-wrapper .dropdown-arrow {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            margin-left: 0.5rem;
+        }
+
+        /* --- DYNAMIC FLEX LAYOUT CONTAINER --- */
+        .layout-container { 
+            display: flex; 
+            flex: 1; 
+            min-height: 0; 
+            overflow: hidden; 
+        }
+
+        .main-content { 
+            flex: 1; 
+            padding: 2rem 2rem 3.5rem 2rem; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1.5rem; 
+            overflow-y: auto; 
+            height: 100%; 
+            scrollbar-width: thin; 
+        }
+
+        .call-btn {
+            background: var(--accent-red);
+            color: #FFFFFF !important;
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(225, 29, 72, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        .call-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        .topic-card-container {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary-light-bg);
+            color: var(--primary-blue);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .topic-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .topic-description {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.6;
+        }
+
+        /* --- CONTENT FORMATTING STYLES --- */
+        .content-section { margin-top: 1.8rem; }
+        .section-heading {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .threat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .threat-card {
+            background: var(--primary-light-bg);
+            padding: 1.2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            transition: transform 0.2s ease;
+        }
+
+        .threat-card:hover { transform: translateY(-3px); }
+
+        .threat-card h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+        }
+
+        .threat-card p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .action-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 0.75rem;
+        }
+
+        .action-list li {
+            position: relative;
+            padding-left: 1.8rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .action-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-blue);
+            font-weight: 900;
+            font-size: 1.1rem;
+        }
+
+        .alert-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--accent-red);
+            padding: 1.2rem 1.4rem;
+            border-radius: 8px;
+            margin-top: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-size: 0.92rem;
+        }
+
+        .alert-box h5 {
+            color: var(--accent-red);
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .helpline-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .helpline-chip {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            padding: 0.65rem 1.1rem;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--primary-blue);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; }
+            .layout-container { flex-direction: column; height: auto; overflow: visible; }
+            header { padding: 1rem 4%; flex-wrap: wrap; }
+            .main-content { padding: 1.2rem 4% 2.5rem 4%; height: auto; overflow: visible; }
+            .threat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="window.location.href='index.html'">
+                <img src="safe-sphere-logo.png" alt="SafeSphere Logo" class="logo-img">
+                <span class="logo-text">SafeSphere</span>
+            </div>
+        </div>
+
+        
+    </header>
+
+    <!-- DIGITAL SAFETY TOPIC SEARCH DROPDOWN BAR -->
+    <div class="topic-bar-container">
+        <div class="topic-search-wrapper">
+            <span class="search-icon">🔍</span>
+            <select id="digitalSafetyTopicSelector" class="topic-dropdown-select" onchange="loadTopicData(this)">
+                <option value="overview" selected data-url="">🛡 SafeSphere Overview: Basic Digital Safety Information</option>
+                <option value="phishing" data-url="digital(theft).html">Theft and Pickpocketing safety</option>
+                <option value="password" data-url="digital(password).html">Password and Account safety</option>
+                <option value="location" data-url="digital(location).html">Location and GPS Privacy</option>
+                <option value="social-media" data-url="digital(safety).html">Safe use of Social Media challenges & Trends</option>
+                <option value="ai-chatbots" data-url="digital(Chatbots).html">Safe use of AI & Chatbots</option>
+                <option value="lottery-scams" data-url="digital(lottery).html">Lottery / Prize Scams</option>
+                <option value="cyberbullying" data-url="digital(cyberbullying).html">Cyberbullying and Online Harassment</option>
+                <option value="education-scams" data-url="digital(Education).html">Fake Scholarship / Education Scams</option>
+            </select>
+            <span class="dropdown-arrow">▼</span>
+        </div>
+    </div>
+
+    <!-- LAYOUT CONTAINER -->
+    <div class="layout-container">
+        <main class="main-content">
+            <div>
+                <a href="index.html" class="call-btn" style="background: var(--primary-light-bg); color: var(--text-main) !important; box-shadow: none;">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+            <article class="topic-card-container" id="topicCardContainer">
+                <!-- Dynamically populated by JS -->
+            </article>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('safeSphereTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applySavedTheme();
+            loadTopicData(document.getElementById('digitalSafetyTopicSelector'));
+        });
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'safeSphereTheme' && e.newValue) {
+                document.documentElement.setAttribute('data-theme', e.newValue);
+            }
+        });
+
+        // Language Dropdown Controller
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        const currentLang = document.getElementById('currentLang');
+
+        if (langBtn && langMenu) {
+            langBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isExpanded = langMenu.classList.toggle('show');
+                langBtn.setAttribute('aria-expanded', isExpanded);
+            });
+
+            const langOptions = langMenu.querySelectorAll('.lang-option');
+            langOptions.forEach(option => {
+                option.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const selectedCode = option.getAttribute('data-code');
+                    currentLang.innerText = selectedCode;
+                    langMenu.classList.remove('show');
+                    langBtn.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            window.addEventListener('click', (event) => {
+                if (!langMenu.contains(event.target) && !langBtn.contains(event.target)) {
+                    langMenu.classList.remove('show');
+                    langBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        // Digital Safety Data Schema
+        const digitalSafetyData = {
+            'overview': {
+                title: "Basic Digital Safety & Cybersecurity Information",
+                badge: "SafeSphere Cyber Defense",
+                description: "Digital safety involves protecting your personal identity, online accounts, financial transactions, and devices from cyber threats, fraud, data breaches, and malicious actors. SafeSphere provides easy, actionable guidance to keep your digital life secure.",
+                content: `
+                    <div class="content-section">
+                        <h3 class="section-heading">⚠️️ Key Digital Safety Threat Areas</h3>
+                        <div class="threat-grid">
+                            <div class="threat-card">
+                                <h4>🎣 Phishing & Scam Links</h4>
+                                <p>Fake emails, messages, or websites designed to steal passwords, credit cards, or personal information.</p>
+                            </div>
+                            <div class="threat-card">
+                                <h4>💳 UPI & Banking Fraud</h4>
+                                <p>Fraudulent QR codes, fake refund claims, or fake customer support agents stealing bank funds.</p>
+                            </div>
+                            <div class="threat-card">
+                                <h4>🦠 Malware & Ransomware</h4>
+                                <p>Harmful software or viruses installed through pirated files, fake app updates, or dangerous links.</p>
+                            </div>
+                            <div class="threat-card">
+                                <h4>👤 Identity Theft & Stalking</h4>
+                                <p>Unauthorized social media cloning, doxxing, keylogging, and account takeover attacks.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-heading">🛡️ Core Digital Safety Principles</h3>
+                        <ul class="action-list">
+                            <li><strong>Strong & Unique Passwords:</strong> Avoid using simple passwords or reusing the same password across multiple websites.</li>
+                            <li><strong>Enable Multi-Factor Authentication (2FA):</strong> Require a phone prompt or authenticator code in addition to your password.</li>
+                            <li><strong>Think Before You Click:</strong> Always verify web address URLs (e.g., check for https:// and official domain names) before typing credentials.</li>
+                            <li><strong>Keep Systems Updated:</strong> Regularly install updates for your phone OS, browser, and installed applications to patch security flaws.</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert-box">
+                        <h5>🚨 Cyber Crime Helpline Directory</h5>
+                        <div class="helpline-grid">
+                            <span class="helpline-chip">📞 National Cyber Crime Helpline: 1930</span>
+                            <span class="helpline-chip">🌐 Official Portal: cybercrime.gov.in</span>
+                            <span class="helpline-chip">🛡️ CERT-In Incident Response: cert-in.org.in</span>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Render / Navigation Function
+        function loadTopicData(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const targetUrl = selectedOption.getAttribute('data-url');
+
+            // If a valid target file URL is specified, redirect to it
+            if (targetUrl && targetUrl.trim() !== "") {
+                window.location.href = targetUrl;
+                return;
+            }
+
+            // Otherwise, render inline overview content
+            const topicKey = selectElement.value;
+            const container = document.getElementById('topicCardContainer');
+            const data = digitalSafetyData[topicKey] || digitalSafetyData['overview'];
+
+            if (data) {
+                container.innerHTML = `
+                    <span class="badge">${data.badge}</span>
+                    <h2 class="topic-title">${data.title}</h2>
+                    <p class="topic-description">${data.description}</p>
+                    ${data.content || ''}
+                `;
+            } else {
+                container.innerHTML = `<p style="color: var(--text-muted);">Topic data not found.</p>`;
+            }
+        }
+    </script>
+</body>
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<!-- Auto-Translate Script -->
+<script>
+    function googleTranslateInit() {
+        // Initialize Google Translate
+        new google.translate.TranslateElement({ 
+            pageLanguage: 'en', 
+            includedLanguages: 'en,hi,mr', 
+            autoDisplay: false 
+        }, 'google_translate_element');
+
+        // Check LocalStorage and Auto-Apply Language
+        setTimeout(function() {
+            var savedLang = localStorage.getItem('safeSphereLang');
+            
+            // If a language is saved and it's not English, trigger translation
+            if (savedLang && savedLang !== 'en') {
+                var selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                }
+            }
+        }, 1000); // 1-second delay ensures Google's script has fully loaded first
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+</html>
